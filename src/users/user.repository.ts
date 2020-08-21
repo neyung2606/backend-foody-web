@@ -12,11 +12,13 @@ export class UserRepository extends Repository<User> {
     }
 
     async createUser(createUserDto: CreateUserDto): Promise<User> {
-        const { firstname, lastname, age, address, phone, job, indentifyCard } = createUserDto;
+        const { name, username, password, avatar, age, address, phone, job, indentifyCard } = createUserDto;
 
         const user = new User();
-        user.firstname = firstname;
-        user.lastname = lastname;
+        user.name = name;
+        user.username = username;
+        user.password = password;
+        user.avatar = avatar;
         user.age = age;
         user.address = address;
         user.phone = phone;
