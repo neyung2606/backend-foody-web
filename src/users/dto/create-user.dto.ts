@@ -14,17 +14,11 @@ export class CreateUserDto {
     avatar: string;
 
     @IsNotEmpty()
-    age: number;
+    dayOfBirth: number;
 
     @IsNotEmpty()
     address: string;
 
     @IsNotEmpty()
     phone: string;
-
-    @IsNotEmpty()
-    job: string;
-
-    @IsNotEmpty()
-    indentifyCard: string;
 }

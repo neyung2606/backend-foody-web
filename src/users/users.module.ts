@@ -3,10 +3,14 @@ import { UsersController } from './users.controller';
 import { UsersService } from './users.service';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { UserRepository } from './user.repository';
+import { MulterModule } from '@nestjs/platform-express';
 
 @Module({
   imports: [
-    TypeOrmModule.forFeature([UserRepository])
+    TypeOrmModule.forFeature([UserRepository]),
+    MulterModule.register({
+      dest: './tmp'
+    })  
   ],
   controllers: [UsersController],
   providers: [UsersService]

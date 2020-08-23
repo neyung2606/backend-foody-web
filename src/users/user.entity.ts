@@ -18,19 +18,13 @@ export class User extends BaseEntity{
     avatar: string;
 
     @Column()
-    age: number;
+    dayOfBirth: number;
 
     @Column()
     address: string;
 
     @Column()
     phone: string;
-
-    @Column()
-    job: string;
-
-    @Column()
-    indentifyCard: string;
 
     @Column()
     role: string;

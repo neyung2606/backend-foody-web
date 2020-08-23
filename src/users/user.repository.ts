@@ -13,18 +13,16 @@ export class UserRepository extends Repository<User> {
     }
 
     async createUser(createUserDto: CreateUserDto): Promise<User> {
-        const { name, username, password, avatar, age, address, phone, job, indentifyCard } = createUserDto;
+        const { name, username, password, avatar, dayOfBirth, address, phone } = createUserDto;
 
         const user = new User();
         user.name = name;
         user.username = username;
         user.password = password;
         user.avatar = avatar;
-        user.age = age;
+        user.dayOfBirth = dayOfBirth;
         user.address = address;
         user.phone = phone;
-        user.job = job;
-        user.indentifyCard = indentifyCard;
         user.role = 'user';
         await user.save();
 
@@ -33,17 +31,15 @@ export class UserRepository extends Repository<User> {
 
     async updateUser(user: User, valueUser: UpdateUserDto): Promise<User> {
         console.log(valueUser)
-        const { name, username, password, avatar, age, address, phone, job, indentifyCard, role } = valueUser;
+        const { name, username, password, avatar, dayOfBirth, address, phone, role } = valueUser;
 
         user.name = name;
         user.username = username;
         user.password = password;
         user.avatar = avatar;
-        user.age = age;
+        user.dayOfBirth = dayOfBirth;
         user.address = address;
         user.phone = phone;
-        user.job = job;
-        user.indentifyCard = indentifyCard;
         user.role = role;
         await user.save();
 

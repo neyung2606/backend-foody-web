@@ -19,13 +19,14 @@
     "test:cov": "jest --coverage",
     "test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand",
     "test:e2e": "jest --config ./test/jest-e2e.json",
-    "postinstall":"tsc"
+    "postinstall": "tsc"
   },
   "dependencies": {
     "@nestjs/common": "^7.0.0",
     "@nestjs/core": "^7.0.0",
-    "@nestjs/platform-express": "^7.0.0",
+    "@nestjs/platform-express": "^7.4.4",
     "@nestjs/typeorm": "^7.1.0",
+    "@types/node": "^13.9.1",
     "class-transformer": "^0.3.1",
     "class-validator": "^0.12.2",
     "dotenv": "^8.2.0",
@@ -34,13 +35,12 @@
     "reflect-metadata": "^0.1.13",
     "rimraf": "^3.0.2",
     "rxjs": "^6.5.4",
-    "typeorm": "^0.2.25",
-    "ts-node": "^8.6.2",
-    "typescript": "^3.7.4",
-    "tsconfig-paths": "^3.9.0",
     "ts-jest": "26.1.0",
     "ts-loader": "^6.2.1",
-    "@types/node": "^13.9.1"
+    "ts-node": "^8.6.2",
+    "tsconfig-paths": "^3.9.0",
+    "typeorm": "^0.2.25",
+    "typescript": "^3.7.4"
   },
   "devDependencies": {
     "@nestjs/cli": "^7.0.0",
