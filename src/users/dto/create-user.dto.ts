@@ -11,9 +11,6 @@ export class CreateUserDto {
     password: string;
 
     @IsNotEmpty()
-    avatar: string;
-
-    @IsNotEmpty()
     dayOfBirth: number;
 
     @IsNotEmpty()
@@ -21,4 +18,5 @@ export class CreateUserDto {
 
     @IsNotEmpty()
     phone: string;
+
 }

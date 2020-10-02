@@ -11,9 +11,6 @@ export class UpdateUserDto {
     password: string;
 
     @IsNotEmpty()
-    avatar: string;
-
-    @IsNotEmpty()
     dayOfBirth: number;
 
     @IsNotEmpty()

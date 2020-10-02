@@ -1,8 +1,10 @@
-import { Controller, Get, Post, Body, UsePipes, ValidationPipe, Param, ParseIntPipe, Put, Delete, UploadedFile } from '@nestjs/common';
+import { Controller, Get, Post, Body, UsePipes, ValidationPipe, Param, ParseIntPipe, Delete, Patch, UseGuards } from '@nestjs/common';
 import { UsersService } from './users.service';
 import { User } from './user.entity';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
+import { ObjectID } from 'typeorm';
+import { AuthService } from 'src/auth/auth.service';
 
 @Controller('users')
 export class UsersController {
@@ -14,23 +16,25 @@ export class UsersController {
     }
 
     @Get('/:id')
-    getUserById(@Param('id', ParseIntPipe) id: number): Promise<User> {
+    @UseGuards(AuthService)
+    getUserById(@Param('id') id: ObjectID): Promise<User> {
         return this.usersService.getUserById(id);
-    }
+    } 
 
     @Post('/create')
     @UsePipes(ValidationPipe)
-    async createUsers(@Body() body,
-    @UploadedFile() file ) {
-        console.log("alo alo")
-        const body1 = await body;
-        console.log(body1, file)
-        // return this.usersService.createUser(createUserDto);
+    createUsers(@Body() createUserDto: CreateUserDto) {
+        return this.usersService.createUser(createUserDto);
     }
 
-    @Put('/:id')
+    @Post('/auth/login')
+    login(@Body() data): Promise<String> {
+        return this.usersService.login(data);
+    }
+
+    @Patch('/:id')
     updateUser(
-        @Param('id', ParseIntPipe) id: number,
+        @Param('id') id: ObjectID,
         @Body() user: UpdateUserDto
     ): Promise<User> {
         console.log(user)
@@ -38,7 +42,7 @@ export class UsersController {
     }
 
     @Delete('/:id')
-    deleteUser(@Param('id', ParseIntPipe) id: number): Promise<void> {
+    deleteUser(@Param('id') id: ObjectID): Promise<void> {
         return this.usersService.deleteUser(id);
     }
 }
