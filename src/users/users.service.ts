@@ -30,10 +30,22 @@ export class UsersService {
     }
 
     async createUser(createUserDto: CreateUserDto): Promise<User> {
-        return this.userRepository.createUser(createUserDto);
+        const hashPass = await jwt.sign(createUserDto.password, 'cnpm17tclc1');
+        const user: CreateUserDto = {
+            ...createUserDto,
+            password: hashPass
+        }
+        return this.userRepository.createUser(user);
     }
 
     async updateUser(id: ObjectID, user: UpdateUserDto): Promise<User> {
+        if (!user.password) {
+            const userGetByID = await this.getUserById(id);
+            user = {
+                ...user,
+                password: userGetByID.password
+            }
+        }
         this.userRepository.update(id, user);
         return this.getUserById(id);
     }
@@ -51,12 +63,13 @@ export class UsersService {
     }
 
     async login(data): Promise<String> {
-        const user = await this.userRepository.findOne(data.username);
+        const { username, password } = await data;
+        const user = await this.userRepository.findOne({ username });
         if (!user) {
             throw new HttpException('User not existed', HttpStatus.CONFLICT);
         }
         try {
-            if (bcrypt.compare(data.password, user.password)) {
+            if (bcrypt.compare(password, user.password)) {
                 return jwt.sign({
                     userID: `${user.id}`
                 }, 'cnpm17tclc1');

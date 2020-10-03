@@ -6,22 +6,24 @@ import { UpdateUserDto } from './dto/update-user.dto';
 import { ObjectID } from 'typeorm';
 import { AuthService } from 'src/auth/auth.service';
 
-@Controller('users')
+@Controller()
 export class UsersController {
     constructor(private usersService: UsersService) {}
 
-    @Get()
+    @Get("users")
+    @UseGuards(AuthService)
     getUsers(): Promise<User[]> {
         return this.usersService.getUsers();
     }
 
-    @Get('/:id')
+    @Get('users/:id')
     @UseGuards(AuthService)
     getUserById(@Param('id') id: ObjectID): Promise<User> {
         return this.usersService.getUserById(id);
     } 
 
-    @Post('/create')
+    @Post('userscreate')
+    @UseGuards(AuthService)
     @UsePipes(ValidationPipe)
     createUsers(@Body() createUserDto: CreateUserDto) {
         return this.usersService.createUser(createUserDto);
@@ -32,7 +34,8 @@ export class UsersController {
         return this.usersService.login(data);
     }
 
-    @Patch('/:id')
+    @Patch('users/:id')
+    @UseGuards(AuthService)
     updateUser(
         @Param('id') id: ObjectID,
         @Body() user: UpdateUserDto
@@ -41,7 +44,8 @@ export class UsersController {
         return this.usersService.updateUser(id, user);
     }
 
-    @Delete('/:id')
+    @Delete('users/:id')
+    @UseGuards(AuthService)
     deleteUser(@Param('id') id: ObjectID): Promise<void> {
         return this.usersService.deleteUser(id);
     }
