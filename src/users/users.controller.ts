@@ -11,19 +11,19 @@ export class UsersController {
     constructor(private usersService: UsersService) {}
 
     @Get("users")
-    // @UseGuards(AuthService)
+    @UseGuards(AuthService)
     getUsers(): Promise<User[]> {
         return this.usersService.getUsers();
     }
 
     @Get('users/:id')
-    // @UseGuards(AuthService)
+    @UseGuards(AuthService)
     getUserById(@Param('id') id: ObjectID): Promise<User> {
         return this.usersService.getUserById(id);
     } 
 
-    @Post('userscreate')
-    // @UseGuards(AuthService)
+    @Post('users/create')
+    @UseGuards(AuthService)
     @UsePipes(ValidationPipe)
     createUsers(@Body() createUserDto: CreateUserDto) {
         return this.usersService.createUser(createUserDto);
@@ -35,7 +35,7 @@ export class UsersController {
     }
 
     @Patch('users/:id')
-    // @UseGuards(AuthService)
+    @UseGuards(AuthService)
     updateUser(
         @Param('id') id: ObjectID,
         @Body() user: UpdateUserDto
@@ -45,7 +45,7 @@ export class UsersController {
     }
 
     @Delete('users/:id')
-    // @UseGuards(AuthService)
+    @UseGuards(AuthService)
     deleteUser(@Param('id') id: ObjectID): Promise<void> {
         return this.usersService.deleteUser(id);
     }
