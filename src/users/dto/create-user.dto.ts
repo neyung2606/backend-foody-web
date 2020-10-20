@@ -11,12 +11,15 @@ export class CreateUserDto {
     password: string;
 
     @IsNotEmpty()
+    email: string;
+
+   
     dayOfBirth: number;
 
-    @IsNotEmpty()
+  
     address: string;
 
-    @IsNotEmpty()
+   
     phone: string;
 
 }

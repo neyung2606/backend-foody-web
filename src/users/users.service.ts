@@ -68,7 +68,7 @@ export class UsersService {
     return this.getUserById(id) ? true : false;
   }
 
-  async login(data): Promise<String> {
+  async login(data): Promise<any> {
     const { username, password } = await data;
     console.log(username, password);
     
@@ -78,12 +78,15 @@ export class UsersService {
     }
     try {
       if (bcrypt.compare(password, user.password)) {
-        return jwt.sign(
+        const token =jwt.sign(
           {
             userID: `${user.id}`,
           },
           'cnpm17tclc1',
         );
+        return {
+          token: token
+        }
       }
     } catch {
       throw new HttpException('Login fail', HttpStatus.CONFLICT);

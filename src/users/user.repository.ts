@@ -5,12 +5,13 @@ import { CreateUserDto } from "./dto/create-user.dto";
 @EntityRepository(User)
 export class UserRepository extends Repository<User> {
     async createUser(createUserDto: CreateUserDto): Promise<User> {
-        const { name, username, password, dayOfBirth, address, phone } = createUserDto;
+        const { name, username, password, email, dayOfBirth, address, phone } = createUserDto;
 
         const user = new User();
         user.name = name;
         user.username = username;
         user.password = password;
+        user.email = email;
         user.avatar = "";
         user.dayOfBirth = dayOfBirth;
         user.address = address;

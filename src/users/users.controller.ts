@@ -4,7 +4,7 @@ import { User } from './user.entity';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { ObjectID } from 'typeorm';
-import { AuthService } from 'src/auth/auth.service';
+import { AuthService } from '../auth/auth.service';
 
 @Controller()
 export class UsersController {
@@ -30,7 +30,7 @@ export class UsersController {
     }
 
     @Post('/auth/login')
-    login(@Body() data): Promise<String> {
+    login(@Body() data): Promise<any> {
         return this.usersService.login(data);
     }
 

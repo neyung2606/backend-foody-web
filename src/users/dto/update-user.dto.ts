@@ -10,6 +10,9 @@ export class UpdateUserDto {
     password: string;
 
     @IsNotEmpty()
+    email: String;
+
+    @IsNotEmpty()
     dayOfBirth: number;
 
     @IsNotEmpty()
