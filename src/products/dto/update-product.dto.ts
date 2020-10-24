@@ -13,7 +13,7 @@ export class UpdateProductDto {
     @IsNotEmpty()
     warranty: number;
 
-    @IsNotEmpty()
+    
     description: string;
 
     @IsNotEmpty()
