@@ -14,7 +14,7 @@ export class UpdateUserDto {
     @IsEmail()
     email: String;
 
-    @IsNotEmpty()
+   
     dayOfBirth: number;
 
 
