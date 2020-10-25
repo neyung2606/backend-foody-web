@@ -1,26 +1,28 @@
-import { IsNotEmpty } from 'class-validator'
+import { IsNotEmpty,MinLength,MaxLength, IsEmail } from 'class-validator'
 
 export class UpdateUserDto {
-    @IsNotEmpty()
+   
     name: string;
 
-    @IsNotEmpty()
+    @MinLength(6)
+    @MaxLength(30)
     username: string;
 
+    @MinLength(8)
     password: string;
 
-    @IsNotEmpty()
+    @IsEmail()
     email: String;
 
     @IsNotEmpty()
     dayOfBirth: number;
 
-    @IsNotEmpty()
+
     address: string;
 
     @IsNotEmpty()
+    @IsNotEmpty()
     phone: string;
 
-    @IsNotEmpty()
     role: string;
 }
