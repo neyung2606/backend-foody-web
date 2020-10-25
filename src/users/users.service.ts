@@ -35,12 +35,22 @@ export class UsersService {
   }
 
   async createUser(createUserDto: CreateUserDto): Promise<User> {
-    const hashPass = await bcrypt.hash(createUserDto.password, 10);
-    const user: CreateUserDto = {
-      ...createUserDto,
-      password: hashPass,
-    };
-    return this.userRepository.createUser(user);
+    const users = await this.getUsers();
+    if (createUserDto.email === "") {
+      const hashPass = await bcrypt.hash(createUserDto.password, 10);
+      const user: CreateUserDto = {
+        ...createUserDto,
+        password: hashPass,
+      };
+      return this.userRepository.createUser(user);
+    } else {
+      const found = users.filter(user => user.email === createUserDto.email)
+
+      if (found) {
+        console.log("aaa")
+        throw new NotFoundException(`User with email is existed!!`);
+      }
+    }
   }
 
   async updateUser(id: ObjectID, user: UpdateUserDto): Promise<User> {
