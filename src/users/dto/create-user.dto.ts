@@ -23,4 +23,6 @@ export class CreateUserDto {
     @IsMobilePhone()
     phone: string;
 
+    role: string
+
 }

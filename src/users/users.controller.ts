@@ -23,7 +23,7 @@ export class UsersController {
     } 
 
     @Post('users/create')
-    @UseGuards(AuthService)
+    
     @UsePipes(ValidationPipe)
     createUsers(@Body() createUserDto: CreateUserDto) {
         return this.usersService.createUser(createUserDto);

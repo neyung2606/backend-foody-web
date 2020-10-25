@@ -11,7 +11,7 @@ export class CreateProductDto {
     price: string;
 
     @IsNotEmpty()
-    warranty: number;
+    warranty: String;
 
     
     description: string;
