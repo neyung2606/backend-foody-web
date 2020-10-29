@@ -86,23 +86,23 @@ export class UsersService {
     const user = await this.userRepository.findOne({ username });
     if (!user) {
       throw new HttpException('User not existed', HttpStatus.CONFLICT);
-    }
-    const match = await bcrypt.compareSync(password, user.password)
-    console.log(match)
-    if (match) {
-      const token = jwt.sign(
-        {
-          userID: `${user.id}`,
-        },
-        'cnpm17tclc1',
-      );
-      return {
-        token: token,
-        role: user.role
-      }
-
     } else {
-      throw new HttpException('Login fail', HttpStatus.CONFLICT);
+      const match = await bcrypt.compareSync(password, user.password)
+      if (match) {
+        const token = jwt.sign(
+          {
+            userID: `${user.id}`,
+          },
+          'cnpm17tclc1',
+        );
+        return {
+          token: token,
+          role: user.role
+        }
+
+      } else {
+        throw new HttpException('Login fail', HttpStatus.CONFLICT);
+      }
     }
   }
 }
