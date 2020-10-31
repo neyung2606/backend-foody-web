@@ -20,8 +20,12 @@ export class UsersService {
     private userRepository: UserRepository,
   ) { }
 
-  async getUsers(): Promise<User[]> {
-    return this.userRepository.find();
+  async getUsers(username: string): Promise<User[]> {
+    const users = await this.userRepository.find();
+    if (username) {
+      const user = users.filter(user => user.username === username)
+      return user
+    } else return users;
   }
 
   async getUserById(id: ObjectID): Promise<User> {
@@ -35,7 +39,7 @@ export class UsersService {
   }
 
   async createUser(createUserDto: CreateUserDto): Promise<User> {
-    const users = await this.getUsers();
+    const users = await this.userRepository.find();
     if (createUserDto.email === "") {
       const hashPass = await bcrypt.hash(createUserDto.password, 10);
       const user: CreateUserDto = {

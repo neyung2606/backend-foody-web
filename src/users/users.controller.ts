@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, UsePipes, ValidationPipe, Param, ParseIntPipe, Delete, Patch, UseGuards } from '@nestjs/common';
+import { Controller, Get, Post, Body, UsePipes, ValidationPipe, Param, Query, Delete, Patch, UseGuards } from '@nestjs/common';
 import { UsersService } from './users.service';
 import { User } from './user.entity';
 import { CreateUserDto } from './dto/create-user.dto';
@@ -12,9 +12,10 @@ export class UsersController {
 
     @Get("users")
     @UseGuards(AuthService)
-    getUsers(): Promise<User[]> {
-        return this.usersService.getUsers();
+    getUsers(@Query('username') username: string): Promise<User[]> {
+        return this.usersService.getUsers(username);
     }
+
 
     @Get('users/:id')
     @UseGuards(AuthService)
@@ -43,6 +44,8 @@ export class UsersController {
         console.log(user)
         return this.usersService.updateUser(id, user);
     }
+
+
 
     @Delete('users/:id')
     @UseGuards(AuthService)
