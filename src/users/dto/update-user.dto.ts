@@ -4,8 +4,9 @@ export class UpdateUserDto {
    
     name: string;
 
+    newPassword: string;
 
-    password: string;
+    checkPassword: string
 
     @IsEmail()
     email: String;

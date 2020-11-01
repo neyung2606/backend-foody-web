@@ -58,15 +58,40 @@ export class UsersService {
   }
 
   async updateUser(id: ObjectID, user: UpdateUserDto): Promise<User> {
-    if (!user.password) {
-      const userGetByID = await this.getUserById(id);
-      user = {
-        ...user,
-        password: userGetByID.password,
-      };
+    console.log(user)
+    if (user.newPassword) {
+      let userGetByID = await this.getUserById(id);
+
+      const match = await bcrypt.compareSync(user.checkPassword, userGetByID.password)
+      if (match) {
+        const hashPass = await bcrypt.hash(user.newPassword, 10);
+        const newUser = {
+          ...userGetByID,
+          password: hashPass
+        }
+        this.userRepository.update(id, newUser);
+        return this.getUserById(id);
+      }
+      else {
+        throw new NotFoundException("Anh tam non");
+      }
     }
-    this.userRepository.update(id, user);
-    return this.getUserById(id);
+    else {
+      const userGetByID = await this.getUserById(id);
+      const newUser = {
+        name: user.name,
+        username: userGetByID.username,
+        password: userGetByID.password,
+        email: user.email,
+        dayOfBirth: user.dayOfBirth,
+        role: userGetByID.role,
+        phone: user.phone,
+        address: user.address
+
+      }
+      this.userRepository.update(id, newUser);
+      return this.getUserById(id);
+    }
   }
 
   async deleteUser(id: ObjectID): Promise<void> {
