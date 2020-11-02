@@ -20,8 +20,12 @@ export class UsersService {
     private userRepository: UserRepository,
   ) {}
 
-  async getUsers(): Promise<User[]> {
-    return this.userRepository.find();
+  async getUsers(username: string): Promise<User[]> {
+    const users = await this.userRepository.find();
+    if (username) {
+      const user = users.filter(user => user.username === username);
+      return user;
+    } else return users;
   }
 
   async getUserById(id: ObjectID): Promise<User> {
@@ -32,6 +36,12 @@ export class UsersService {
     }
 
     return user;
+  }
+
+  async getUserByUsername(username: string): Promise<User> {
+    const user = this.userRepository.find({username});
+    console.log(user)
+    return;
   }
 
   async createUser(createUserDto: CreateUserDto): Promise<User> {
@@ -71,24 +81,22 @@ export class UsersService {
   async login(data): Promise<any> {
     const { username, password } = await data;
     console.log(username, password);
-    
+
     const user = await this.userRepository.findOne({ username });
     if (!user) {
       throw new HttpException('User not existed', HttpStatus.CONFLICT);
     }
-    try {
-      if (bcrypt.compare(password, user.password)) {
-        const token =jwt.sign(
-          {
-            userID: `${user.id}`,
-          },
-          'cnpm17tclc1',
-        );
-        return {
-          token: token
-        }
-      }
-    } catch {
+    if (await bcrypt.compare(password, user.password)) {
+      const token = jwt.sign(
+        {
+          userID: `${user.id}`,
+        },
+        'cnpm17tclc1',
+      );
+      return {
+        token: token,
+      };
+    } else {
       throw new HttpException('Login fail', HttpStatus.CONFLICT);
     }
   }

@@ -8,6 +8,7 @@ export class AuthService implements CanActivate {
 
     canActivate(context: ExecutionContext) {
         const req = context.switchToHttp().getRequest();
+        console.log(req.headers)
         const token = req && req.headers.authorization;
         
         if (!token || token.split(' ')[0] !== "Bearer") {
