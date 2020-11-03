@@ -8,6 +8,7 @@ import { AuthModule } from './auth/auth.module';
 import { ProductsModule } from './products/products.module';
 import { ProductsController } from './products/products.controller';
 import { ProductsCategoriesModule } from './products-categories/products-categories.module';
+import { ImageModule } from './image/image.module';
 
 @Module({
   imports: [
@@ -15,7 +16,8 @@ import { ProductsCategoriesModule } from './products-categories/products-categor
     UsersModule,
     AuthModule,
     ProductsModule,
-    ProductsCategoriesModule
+    ProductsCategoriesModule,
+    ImageModule
   ],
   controllers: [AppController, ProductsController],
   providers: [AppService],

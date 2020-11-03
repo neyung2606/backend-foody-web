@@ -11,7 +11,6 @@ export class UpdateUserDto {
     @IsEmail()
     email: String;
 
-   
     dayOfBirth: number;
     address: string;
 
