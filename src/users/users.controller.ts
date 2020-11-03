@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, UsePipes, ValidationPipe, Param, Query, Delete, Patch, UseGuards } from '@nestjs/common';
+import { Controller, Get, Post, Body, UsePipes, ValidationPipe, Param, Query, Delete, Patch, UseGuards, Put } from '@nestjs/common';
 import { UsersService } from './users.service';
 import { User } from './user.entity';
 import { CreateUserDto } from './dto/create-user.dto';
@@ -34,7 +34,7 @@ export class UsersController {
         return this.usersService.login(data);
     }
 
-    @Patch('users/:id')
+    @Put('users/:id')
     @UseGuards(AuthService)
     updateUser(
         @Param('id') id: ObjectID,
