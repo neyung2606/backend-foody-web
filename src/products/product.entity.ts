@@ -18,7 +18,7 @@ export class Product extends BaseEntity{
     categoryID: ObjectID;
 
     @Column()
-    warranty: number;
+    warranty: String;
 
     @Column()
     description: string;

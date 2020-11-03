@@ -7,13 +7,15 @@ import { typeOrmConfig } from './config/typeorm.config';
 import { AuthModule } from './auth/auth.module';
 import { ProductsModule } from './products/products.module';
 import { ProductsController } from './products/products.controller';
+import { ProductsCategoriesModule } from './products-categories/products-categories.module';
 
 @Module({
   imports: [
     TypeOrmModule.forRoot(typeOrmConfig),
     UsersModule,
     AuthModule,
-    ProductsModule
+    ProductsModule,
+    ProductsCategoriesModule
   ],
   controllers: [AppController, ProductsController],
   providers: [AppService],
