@@ -1,9 +1,9 @@
-import { Column, Entity, BaseEntity, ObjectID, ObjectIdColumn } from "typeorm";
+import { Column, Entity, BaseEntity, ObjectID, ObjectIdColumn, PrimaryGeneratedColumn } from "typeorm";
 
-@Entity()
+@Entity('products')
 export class Product extends BaseEntity{
-    @ObjectIdColumn()
-    id: ObjectID;
+    @PrimaryGeneratedColumn()
+    id: string;
 
     @Column()
     name: string
@@ -14,8 +14,8 @@ export class Product extends BaseEntity{
     @Column()
     price: string;
 
-    @ObjectIdColumn()
-    categoryID: ObjectID;
+    @Column()
+    categoryID: string;
 
     @Column()
     warranty: String;
@@ -44,7 +44,7 @@ export class Product extends BaseEntity{
     @Column()
     status: string;
 
-    @ObjectIdColumn()
-    postID: ObjectID;
+    @Column()
+    postID: string;
 
 }

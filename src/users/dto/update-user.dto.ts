@@ -1,22 +1,26 @@
-import { IsNotEmpty,MinLength,MaxLength, IsEmail,IsMobilePhone } from 'class-validator'
+import {
+  IsNotEmpty,
+  MinLength,
+  MaxLength,
+  IsEmail,
+  IsMobilePhone,
+} from 'class-validator';
 
 export class UpdateUserDto {
-   
-    name: string;
+  name: string;
 
-    newPassword: string;
+  newPassword: string;
 
-    checkPassword: string
+  checkPassword: string;
 
-    @IsEmail()
-    email: String;
+  @IsEmail()
+  email: String;
 
-   
-    dayOfBirth: number;
-    address: string;
+  dayOfBirth: Date;
+  address: string;
 
-    @IsMobilePhone()
-    phone: string;
+  @IsMobilePhone()
+  phone: string;
 
-    role: string;
+  role: string;
 }

@@ -1,6 +1,7 @@
 import { Repository, EntityRepository, ObjectID } from "typeorm";
 import { User } from "./user.entity";
 import { CreateUserDto } from "./dto/create-user.dto";
+import { Role } from "src/roles/role.entity";
 
 @EntityRepository(User)
 export class UserRepository extends Repository<User> {
@@ -16,7 +17,7 @@ export class UserRepository extends Repository<User> {
         user.dayOfBirth = dayOfBirth;
         user.address = address;
         user.phone = phone;
-        user.role = role ? role : 'user';
+        // user.role = Role.findOne(roleId)
         await user.save();
 
         return user;

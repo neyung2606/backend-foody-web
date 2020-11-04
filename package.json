@@ -19,7 +19,11 @@
     "test:cov": "jest --coverage",
     "test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand",
     "test:e2e": "jest --config ./test/jest-e2e.json",
-    "postinstall": "tsc"
+    "postinstall": "tsc",
+    "seed:run": "ts-node ./node_modules/typeorm-seeding/dist/cli.js seed",
+    "schema:sync": "ts-node ./node_modules/typeorm/cli.js schema:sync",
+    "schema:drop": "ts-node ./node_modules/typeorm/cli.js schema:drop",
+    "schema:reset": "npm run schema:drop && npm run schema:sync && npm run seed:run"
   },
   "dependencies": {
     "@nestjs/common": "^7.0.0",
@@ -32,7 +36,9 @@
     "class-transformer": "^0.3.1",
     "class-validator": "^0.12.2",
     "dotenv": "^8.2.0",
+    "faker": "^5.1.0",
     "jsonwebtoken": "^8.5.1",
+    "lodash": "^4.17.20",
     "mongodb": "^3.6.2",
     "nodemon": "^2.0.4",
     "pg": "^8.3.0",
@@ -45,6 +51,7 @@
     "ts-node": "^8.6.2",
     "tsconfig-paths": "^3.9.0",
     "typeorm": "^0.2.25",
+    "typeorm-seeding": "^1.6.1",
     "typescript": "^3.7.4"
   },
   "devDependencies": {

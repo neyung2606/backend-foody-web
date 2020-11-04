@@ -1,9 +1,12 @@
-import { Column, Entity, BaseEntity, ObjectID, ObjectIdColumn } from "typeorm";
+import { Role } from "../roles/role.entity";
+import { Column, Entity, BaseEntity, PrimaryGeneratedColumn, ManyToOne, BeforeInsert, BeforeUpdate } from "typeorm";
+import { IsEmail } from "class-validator";
+import * as bcrypt from 'bcrypt'
 
-@Entity()
+@Entity('users')
 export class User extends BaseEntity{
-    @ObjectIdColumn()
-    id: ObjectID;
+    @PrimaryGeneratedColumn()
+    id: string;
 
     @Column()
     name: string
@@ -14,14 +17,15 @@ export class User extends BaseEntity{
     @Column()
     password: string;
 
-    @Column() 
+    @Column()
+    @IsEmail()
     email: String;
 
     @Column()
     avatar: string;
 
     @Column()
-    dayOfBirth: number;
+    dayOfBirth: Date;
 
     @Column()
     address: string;
@@ -29,6 +33,14 @@ export class User extends BaseEntity{
     @Column()
     phone: string;
 
-    @Column()
-    role: string;
+    roleId: number;
+
+    @BeforeInsert()
+    @BeforeUpdate()
+    hashPwd() {
+        this.password = bcrypt.hashSync(this.password, 10)
+    }
+
+    @ManyToOne(() => Role)
+    role: Role;
 }
