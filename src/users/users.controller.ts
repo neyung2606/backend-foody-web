@@ -57,9 +57,28 @@ export class UsersController {
     return this.usersService.updateUser(id, user);
   }
 
+<<<<<<< HEAD
   @Delete('users/:id')
   @UseGuards(AuthService)
   deleteUser(@Param('id') id: ObjectID): Promise<void> {
     return this.usersService.deleteUser(id);
   }
+=======
+    @Put('users/:id')
+    @UseGuards(AuthService)
+    updateUser(
+        @Param('id') id: ObjectID,
+        @Body() user: UpdateUserDto
+    ): Promise<User> {
+        return this.usersService.updateUser(id, user);
+    }
+
+
+
+    @Delete('users/:id')
+    @UseGuards(AuthService)
+    deleteUser(@Param('id') id: ObjectID): Promise<void> {
+        return this.usersService.deleteUser(id);
+    }
+>>>>>>> 58c68c26bf80c1905f854bd2617f01833c9f12c3
 }
