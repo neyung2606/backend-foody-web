@@ -29,7 +29,9 @@ export class UsersService {
   }
 
   async getUserById(id: ObjectID): Promise<User> {
-    const user = this.userRepository.findOne(id);
+    const user = this.userRepository.findOne(id, {
+      relations: ["role", "role.permissions"]
+    });
 
     if (!user) {
       throw new NotFoundException(`User with ${id} not found!!`);
@@ -108,17 +110,14 @@ export class UsersService {
     }
   }
 
-  async checkIdUser(id: ObjectID): Promise<boolean> {
-    const user = await this.getUserById(id);
-
-    return this.getUserById(id) ? true : false;
-  }
-
   async login(data): Promise<any> {
     const { username, password } = await data;
     console.log(username, password);
 
-    const user = await this.userRepository.findOne({ username });
+    const user = await this.userRepository.findOne({
+      where: {username},
+      relations: ['role']
+    });
     if (!user) {
       throw new HttpException('User not existed', HttpStatus.CONFLICT);
     } else {
@@ -132,7 +131,7 @@ export class UsersService {
         );
         return {
           token: token,
-          role: user.role
+          role: user.role.name
         }
 
       } else {

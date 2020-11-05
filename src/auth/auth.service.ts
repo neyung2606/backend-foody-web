@@ -1,14 +1,19 @@
 import { Injectable, ExecutionContext, CanActivate, HttpException, HttpStatus } from '@nestjs/common';
 import { UsersService } from 'src/users/users.service';
 import * as jwt from 'jsonwebtoken';
+import { User } from 'src/users/user.entity';
+import { Reflector } from '@nestjs/core';
 
 @Injectable()
 export class AuthService implements CanActivate {
-    constructor(private readonly userService: UsersService) {}
+    constructor(
+        private reflector: Reflector,
+        private readonly userService: UsersService
+    ) {}
 
-    canActivate(context: ExecutionContext) {
+    async canActivate(context: ExecutionContext) {
         const req = context.switchToHttp().getRequest();
-        console.log(req.headers)
+        const permission = await this.reflector.get('roles', context.getHandler());
         const token = req && req.headers.authorization;
         
         if (!token || token.split(' ')[0] !== "Bearer") {
@@ -17,9 +22,19 @@ export class AuthService implements CanActivate {
         
         try {
             const decode = jwt.verify(token.split(' ')[1], 'cnpm17tclc1');
-            return this.userService.checkIdUser(decode.userID) ? true : false;
+            const user = await this.userService.getUserById(decode.userID);
+            req.user = user;
+            return this.checkPermission(user, permission);
         } catch {
             throw new HttpException('Token Fail', HttpStatus.FORBIDDEN)
         }
+    }
+
+    checkPermission(user: User, permissionReq: string) {
+        return user.role.permissions.some(permission => {
+            if (permission.name === "ALL") return true;
+            if (permission.name === permissionReq) return true;
+            return false;
+        })
     }
 }
