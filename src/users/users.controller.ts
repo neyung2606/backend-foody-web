@@ -7,13 +7,13 @@ import {
   Query,
   Delete,
   Put,
+  Req,
 } from '@nestjs/common';
 import { UsersService } from './users.service';
 import { User } from './user.entity';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { ObjectID } from 'typeorm';
-// import { AuthService } from '../auth/auth.service';
 import { Auth } from 'src/auth/auth.decorator';
 
 @Controller()
@@ -22,13 +22,13 @@ export class UsersController {
 
   @Get('users')
   @Auth('USER_READ')
-  getUsers(@Query('username') username: string): Promise<User[]> {
-    return this.usersService.getUsers(username);
+  getUsers(@Query() req): Promise<User[]> {
+    return this.usersService.getUsers(req);
   }
 
   @Get('users/:id')
   @Auth('USER_READ')
-  getUserById(@Param('id') id: ObjectID): Promise<User> {
+  getUserById(@Param('id') id: number): Promise<User> {
     return this.usersService.getUserById(id);
   }
 
@@ -37,21 +37,44 @@ export class UsersController {
     return this.usersService.createUser(createUserDto);
   }
 
+  @Post('users/create')
+  @Auth('USER_CREATE')
+  createUsersByAdmin(@Body() createUserDto: CreateUserDto) {
+    console.log(createUserDto)
+    return this.usersService.createUser(createUserDto);
+  }
+
   @Post('/auth/login')
   login(@Body() data): Promise<any> {
     return this.usersService.login(data);
   }
 
-  @Put('users/:id')
-  updateUser(
-    @Param('id') id: ObjectID,
+  @Get('me')
+  @Auth('')
+  getProfile(@Req() request) {
+    return request.user
+  }
+
+  @Put('update/:id')
+  @Auth('')
+  updateUserMobile(
+    @Param('id') id: number,
     @Body() user: UpdateUserDto,
+  ): Promise<User> {
+    return this.usersService.updateUserMobile(id, user);
+  }
+
+  @Put('users/:id')
+  @Auth('USER_UPDATE')
+  updateUser(
+    @Param('id') id: number,
+    @Body() user: CreateUserDto,
   ): Promise<User> {
     return this.usersService.updateUser(id, user);
   }
 
   @Delete('users/:id')
-  // @UseGuards(AuthService)
+  @Auth('USER_DELETE')
   deleteUser(@Param('id') id: ObjectID): Promise<void> {
     return this.usersService.deleteUser(id);
   }

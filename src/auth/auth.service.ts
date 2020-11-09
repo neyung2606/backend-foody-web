@@ -24,6 +24,7 @@ export class AuthService implements CanActivate {
             const decode = jwt.verify(token.split(' ')[1], 'cnpm17tclc1');
             const user = await this.userService.getUserById(decode.userID);
             req.user = user;
+            if (permission === '' && user) return true;  
             return this.checkPermission(user, permission);
         } catch {
             throw new HttpException('Token Fail', HttpStatus.FORBIDDEN)
@@ -32,6 +33,7 @@ export class AuthService implements CanActivate {
 
     checkPermission(user: User, permissionReq: string) {
         return user.role.permissions.some(permission => {
+            console.log(permission)
             if (permission.name === "ALL") return true;
             if (permission.name === permissionReq) return true;
             return false;

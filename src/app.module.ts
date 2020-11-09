@@ -7,6 +7,8 @@ import { typeOrmConfig } from './config/typeorm.config';
 import { AuthModule } from './auth/auth.module';
 import { ProductsModule } from './products/products.module';
 import { ProductsController } from './products/products.controller';
+import { PermissionsModule } from './permissions/permissions.module';
+import { RolesModule } from './roles/roles.module';
 
 @Module({
   imports: [
@@ -14,6 +16,8 @@ import { ProductsController } from './products/products.controller';
     UsersModule,
     AuthModule,
     ProductsModule,
+    PermissionsModule,
+    RolesModule,
   ],
   controllers: [AppController, ProductsController],
   providers: [AppService],
