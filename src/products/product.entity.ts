@@ -1,24 +1,34 @@
-import { Column, Entity, BaseEntity, ObjectID, ObjectIdColumn, PrimaryGeneratedColumn } from "typeorm";
-
+import {
+    Entity,
+    PrimaryGeneratedColumn,
+    Column,
+    ManyToMany,
+    OneToMany,
+    JoinTable,
+    BaseEntity,
+  } from 'typeorm';
+import { ApiProperty } from '@nestjs/swagger';
+import { IsOptional, IsNumber } from 'class-validator';
+import { productCategories } from '../products-categories/products-categories.entity'
 @Entity('products')
 export class Product extends BaseEntity{
+    @ApiProperty()
     @PrimaryGeneratedColumn()
     id: string;
 
-    @Column()
+    @Column({ nullable: true })
     name: string
 
     @Column()
     image: string;
 
     @Column()
-    price: string;
+    price: number;
 
-    @Column()
-    categoryID: string;
-
-    @Column()
-    warranty: String;
+    @ApiProperty({ writeOnly: true, example: [1, 4] })
+    @IsOptional()
+    @IsNumber({}, { each: true })
+    categoryID: Array<number>;
 
     @Column()
     description: string;
@@ -26,25 +36,31 @@ export class Product extends BaseEntity{
     @Column()
     quantity: number;
 
-    @Column()
-    tag: string;
-
-    @Column()
-    createby: string;
-
-    @Column()
-    createdate: number;
-
-    @Column()
-    updateby: string;
-
-    @Column()
-    updatedate: number;
-
-    @Column()
-    status: string;
-
-    @Column()
     postID: string;
+
+    //relation 
+  //  @ApiProperty()
+  //  @ManyToMany(
+   //    () => productCategories,
+  //    productscategory => productscategory.product ,
+  //  )
+    @JoinTable
+    (
+        {
+            name: 'categories_products',
+            joinColumn: 
+            {
+                name: 'productID',
+                referencedColumnName: "id",
+            },
+            inverseJoinColumn:
+            {
+                name: 'categoryID',
+                referencedColumnName: "id"
+            },
+        },
+    )
+    @ManyToMany(() => productCategories)
+     productscategory: productCategories;
 
 }
