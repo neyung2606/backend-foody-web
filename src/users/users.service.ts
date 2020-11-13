@@ -13,7 +13,6 @@ import { ObjectID } from 'typeorm';
 import * as jwt from 'jsonwebtoken';
 import * as bcrypt from 'bcrypt';
 import { Role } from 'src/roles/role.entity';
-import { check } from 'prettier';
 
 @Injectable()
 export class UsersService {
