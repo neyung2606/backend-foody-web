@@ -4,7 +4,7 @@ import { Entity, ObjectIdColumn, ObjectID, Column, ManyToMany, BaseEntity, Prima
 @Entity('permissions')
 export class Permission extends BaseEntity {
     @PrimaryGeneratedColumn()
-    id: string;
+    id: number;
 
     @Column()
     name: string;

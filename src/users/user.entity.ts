@@ -1,46 +1,54 @@
-import { Role } from "../roles/role.entity";
-import { Column, Entity, BaseEntity, PrimaryGeneratedColumn, ManyToOne, BeforeInsert, BeforeUpdate } from "typeorm";
-import { IsEmail } from "class-validator";
-import * as bcrypt from 'bcrypt'
+import { Role } from '../roles/role.entity';
+import {
+  Column,
+  Entity,
+  BaseEntity,
+  PrimaryGeneratedColumn,
+  ManyToOne,
+  BeforeInsert,
+  BeforeUpdate,
+} from 'typeorm';
+import { IsEmail, IsOptional } from 'class-validator';
+import * as bcrypt from 'bcrypt';
 
 @Entity('users')
-export class User extends BaseEntity{
-    @PrimaryGeneratedColumn()
-    id: string;
+export class User extends BaseEntity {
+  @PrimaryGeneratedColumn()
+  id: string;
 
-    @Column()
-    name: string
+  @Column({ nullable: true })
+  name: string;
 
-    @Column({unique:true})
-    username: string;
+  @Column({ unique: true })
+  username: string;
 
-    @Column()
-    password: string;
+  @Column()
+  password: string;
 
-    @Column()
-    @IsEmail()
-    email: String;
+  @Column({ nullable: true })
+  @IsEmail()
+  email: String;
 
-    @Column()
-    avatar: string;
+  @Column({ nullable: true })
+  avatar: string;
 
-    @Column()
-    dayOfBirth: Date;
+  @Column({ nullable: true })
+  dayOfBirth: Date;
 
-    @Column()
-    address: string;
+  @Column({ nullable: true })
+  address: string;
 
-    @Column()
-    phone: string;
+  @Column({ nullable: true })
+  phone: string;
 
-    roleId: number;
+  roleId: number;
 
-    @BeforeInsert()
-    @BeforeUpdate()
-    hashPwd() {
-        this.password = bcrypt.hashSync(this.password, 10)
-    }
+  @BeforeInsert()
+  @BeforeUpdate()
+  hashPwd() {
+    this.password = bcrypt.hashSync(this.password, 10);
+  }
 
-    @ManyToOne(() => Role)
-    role: Role;
+  @ManyToOne(() => Role)
+  role: Role;
 }

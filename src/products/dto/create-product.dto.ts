@@ -8,33 +8,15 @@ export class CreateProductDto {
     image: string;
 
     @IsNotEmpty()
-    price: string;
+    price: number;
 
-    @IsNotEmpty()
-    warranty: String;
 
-    
     description: string;
 
     @IsNotEmpty()
     quantity: number;
 
-    @IsNotEmpty()
-    tag: string;
+    productscategory: String;
 
-    @IsNotEmpty()
-    createby: string;
-
-    @IsNotEmpty()
-    createdate: number;
-
-    @IsNotEmpty()
-    updateby: string;
-
-    @IsNotEmpty()
-    updatedate: number;
-
-    @IsNotEmpty()
-    status: string;
 
 }

@@ -3,20 +3,17 @@ import {
   Get,
   Post,
   Body,
-  UsePipes,
-  ValidationPipe,
   Param,
   Query,
   Delete,
-  UseGuards,
   Put,
+  Req,
 } from '@nestjs/common';
 import { UsersService } from './users.service';
 import { User } from './user.entity';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { ObjectID } from 'typeorm';
-import { AuthService } from '../auth/auth.service';
 import { Auth } from 'src/auth/auth.decorator';
 
 @Controller()
@@ -24,44 +21,61 @@ export class UsersController {
   constructor(private usersService: UsersService) {}
 
   @Get('users')
-  @UseGuards(AuthService)
-  getUsers(@Query('username') username: string): Promise<User[]> {
-    return this.usersService.getUsers(username);
+  @Auth('USER_READ')
+  getUsers(@Query() req): Promise<User[]> {
+    return this.usersService.getUsers(req);
   }
 
   @Get('users/:id')
-  @UseGuards(AuthService)
-  getUserById(@Param('id') id: ObjectID): Promise<User> {
-    console.log('bb');
+  @Auth('USER_READ')
+  getUserById(@Param('id') id: number): Promise<User> {
     return this.usersService.getUserById(id);
   }
 
   @Post('auth/register')
-  @UsePipes(ValidationPipe)
   createUsers(@Body() createUserDto: CreateUserDto) {
     return this.usersService.createUser(createUserDto);
   }
 
+  @Post('users/create')
+  @Auth('USER_CREATE')
+  createUsersByAdmin(@Body() createUserDto: CreateUserDto) {
+    console.log(createUserDto)
+    return this.usersService.createUser(createUserDto);
+  }
+
   @Post('/auth/login')
-  @Auth('LOGIN')
   login(@Body() data): Promise<any> {
     return this.usersService.login(data);
   }
 
-    @Put('users/:id')
-    @UseGuards(AuthService)
-    updateUser(
-        @Param('id') id: ObjectID,
-        @Body() user: UpdateUserDto
-    ): Promise<User> {
-        return this.usersService.updateUser(id, user);
-    }
+  @Get('me')
+  @Auth('')
+  getProfile(@Req() request) {
+    return request.user
+  }
 
+  @Put('update/:id')
+  @Auth('')
+  updateUserMobile(
+    @Param('id') id: number,
+    @Body() user: UpdateUserDto,
+  ): Promise<User> {
+    return this.usersService.updateUserMobile(id, user);
+  }
 
+  @Put('users/:id')
+  @Auth('USER_UPDATE')
+  updateUser(
+    @Param('id') id: number,
+    @Body() user: CreateUserDto,
+  ): Promise<User> {
+    return this.usersService.updateUser(id, user);
+  }
 
-    @Delete('users/:id')
-    @UseGuards(AuthService)
-    deleteUser(@Param('id') id: ObjectID): Promise<void> {
-        return this.usersService.deleteUser(id);
-    }
+  @Delete('users/:id')
+  @Auth('USER_DELETE')
+  deleteUser(@Param('id') id: ObjectID): Promise<void> {
+    return this.usersService.deleteUser(id);
+  }
 }

@@ -5,7 +5,7 @@ import
      HttpStatus,
      NotFoundException, 
 } from '@nestjs/common';
-import {ProductRespository} from './product.respository';
+import {ProductRespository} from './product.repository';
 import {Product} from './product.entity';
 import {CreateProductDto } from './dto/create-product.dto';
 import {UpdateProductDto} from './dto/update-product.dto';
