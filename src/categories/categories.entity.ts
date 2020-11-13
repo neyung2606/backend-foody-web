@@ -1,8 +1,8 @@
 import { Product } from '../products/product.entity';
 import { Entity, Column, ManyToMany, BaseEntity, PrimaryGeneratedColumn } from 'typeorm';
 
-@Entity('product-categories')
-export class productCategories extends BaseEntity{
+@Entity('categories')
+export class Categories extends BaseEntity{
     @PrimaryGeneratedColumn()
     id: String;
 
@@ -10,6 +10,6 @@ export class productCategories extends BaseEntity{
     name: string;
 
     //relation
-    @ManyToMany(() => Product, product => product.productscategory )
+    @ManyToMany(() => Product, product => product.category )
     product : Product[]
 }

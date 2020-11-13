@@ -6,15 +6,15 @@ import {
     OneToMany,
     JoinTable,
     BaseEntity,
-  } from 'typeorm';
+} from 'typeorm';
 import { ApiProperty } from '@nestjs/swagger';
 import { IsOptional, IsNumber } from 'class-validator';
-import { productCategories } from '../products-categories/products-categories.entity'
+import { Categories } from '../categories/categories.entity'
 @Entity('products')
-export class Product extends BaseEntity{
+export class Product extends BaseEntity {
     @ApiProperty()
     @PrimaryGeneratedColumn()
-    id: string;
+    id: number;
 
     @Column({ nullable: true })
     name: string
@@ -39,28 +39,29 @@ export class Product extends BaseEntity{
     postID: string;
 
     //relation 
-  //  @ApiProperty()
-  //  @ManyToMany(
-   //    () => productCategories,
-  //    productscategory => productscategory.product ,
-  //  )
-    @JoinTable
-    (
-        {
-            name: 'categories_products',
-            joinColumn: 
-            {
-                name: 'productID',
-                referencedColumnName: "id",
-            },
-            inverseJoinColumn:
-            {
-                name: 'categoryID',
-                referencedColumnName: "id"
-            },
-        },
+    //  @ApiProperty()
+    @ManyToMany(
+        () => Categories,
+        productscategory => productscategory.product ,
     )
-    @ManyToMany(() => productCategories)
-     productscategory: productCategories;
+
+    @JoinTable
+        (
+            {
+                name: 'categories_products',
+                joinColumn:
+                {
+                    name: 'productID',
+                    referencedColumnName: "id",
+                },
+                inverseJoinColumn:
+                {
+                    name: 'categoryID',
+                    referencedColumnName: "id"
+                },
+            },
+        )
+    category: Categories[];
+    // @ManyToMany(() => Categories)
 
 }

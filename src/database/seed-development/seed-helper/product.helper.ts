@@ -1,28 +1,31 @@
 import { from } from "rxjs";
 import {Ecate} from '../../../common/enums/productCateogory.enum';
-import {productCategories} from '../../../products-categories/products-categories.entity';
+import {Categories} from '../../../categories/categories.entity';
 import {Product} from '../../../products/product.entity';
 
 export class ProductHelper {
     private _data : Product[];
 
-    constructor (productcategory: productCategories[]){
+    constructor (productcategory: Categories[]){
         this._data = this.getData(productcategory);
     }
 
-    private getData(productcategory: productCategories[]): any[]{
-        return[
-            Product.create(
-                {
-                    name: 'cơm tấm bà nhi',
-                    image: '',
-                    price: '25000',
-                    description: 'ngon bổ rẻ',
-                    quantity: '50',
-                    productcategory : productcategory.find(item => item.name === Ecate.FRIEDFOOD),
-                    
-                }
-            ),
+    private getData(productcategory: Categories[]): any[]{
+        let arrCate = [];
+        productcategory.map(item => {
+            if(item.name === Ecate.MEAT) {
+                arrCate.push(item)
+            }
+        })
+        return [
+            Product.create({
+                name: 'Cơm bà tâm',
+                image: "",
+                price: 500000,
+                description: 'anh tam non',
+                quantity: 20,
+                category: arrCate
+            })
         ];
     }
     public initProduct(): Promise<Product[]> {
