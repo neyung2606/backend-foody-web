@@ -12,24 +12,38 @@ import { UpdateUserDto } from './dto/update-user.dto';
 import { ObjectID } from 'typeorm';
 import * as jwt from 'jsonwebtoken';
 import * as bcrypt from 'bcrypt';
+import { Role } from 'src/roles/role.entity';
+import { check } from 'prettier';
 
 @Injectable()
 export class UsersService {
   constructor(
     @InjectRepository(UserRepository)
     private userRepository: UserRepository,
-  ) { }
+  ) {}
 
-  async getUsers(username: string): Promise<User[]> {
-    const users = await this.userRepository.find();
+  async getUsers(req: any): Promise<User[]> {
+    const { username, id } = await req;
+    console.log(username, id);
     if (username) {
-      const user = users.filter(user => user.username === username)
-      return user
-    } else return users;
+      return this.userRepository.find({
+        where: { username },
+        relations: ['role'],
+      });
+    }
+    if (id) {
+      return this.userRepository.find({
+        where: { id },
+        relations: ['role'],
+      });
+    }
+    return await this.userRepository.find({ relations: ['role'] });
   }
 
-  async getUserById(id: ObjectID): Promise<User> {
-    const user = this.userRepository.findOne(id);
+  async getUserById(id: number): Promise<User> {
+    const user = this.userRepository.findOne(id, {
+      relations: ['role', 'role.permissions'],
+    });
 
     if (!user) {
       throw new NotFoundException(`User with ${id} not found!!`);
@@ -39,65 +53,63 @@ export class UsersService {
   }
 
   async getUserByUsername(username: string): Promise<User> {
-    const user = this.userRepository.find({username});
-    console.log(user)
+    const user = this.userRepository.find({ username });
+    console.log(user);
     return;
   }
 
   async createUser(createUserDto: CreateUserDto): Promise<User> {
     const users = await this.userRepository.find();
-    if (createUserDto.email === "") {
-      const hashPass = await bcrypt.hash(createUserDto.password, 10);
-      const user: CreateUserDto = {
-        ...createUserDto,
-        password: hashPass,
-      };
-      return this.userRepository.createUser(user);
-    } else {
-      const found = users.filter(user => user.email === createUserDto.email)
+    const found = users.filter(user => user.email === createUserDto.email);
+    if (found && createUserDto.email) {
+      throw new NotFoundException(`User with email is existed!!`);
+    }
+    return this.userRepository.createUser(createUserDto);
+  }
 
-      if (found) {
-        console.log("aaa")
-        throw new NotFoundException(`User with email is existed!!`);
+  async updateUserMobile(id: number, user: UpdateUserDto): Promise<User> {
+    const userGetByID = await this.getUserById(id);
+    const checkRole = await this.checkRole(user.role);
+    const userUpdate = checkRole
+      ? {
+          ...user,
+          role: checkRole,
+        }
+      : {
+          ...user,
+          role: userGetByID.role,
+        };
+    if (user.newPassword) {
+      const match = await bcrypt.compareSync(
+        user.checkPassword,
+        userGetByID.password,
+      );
+      if (match) {
+        this.userRepository.update(id, userUpdate);
+        return this.getUserById(id);
+      } else {
+        throw new NotFoundException('Kiểm tra lại pass cũ');
       }
+    } else {
+      this.userRepository.update(id, userUpdate);
+      return this.getUserById(id);
     }
   }
 
-  async updateUser(id: ObjectID, user: UpdateUserDto): Promise<User> {
-    console.log(user)
-    if (user.newPassword) {
-      let userGetByID = await this.getUserById(id);
-
-      const match = await bcrypt.compareSync(user.checkPassword, userGetByID.password)
-      if (match) {
-        const hashPass = await bcrypt.hash(user.newPassword, 10);
-        const newUser = {
-          ...userGetByID,
-          password: hashPass
+  async updateUser(id: number, user: CreateUserDto): Promise<User> {
+    const userGetByID = await this.getUserById(id);
+    const checkRole = await this.checkRole(user.role);
+    const userUpdate = checkRole
+      ? {
+          ...user,
+          role: checkRole,
         }
-        this.userRepository.update(id, newUser);
-        return this.getUserById(id);
-      }
-      else {
-        throw new NotFoundException("Anh tam non");
-      }
-    }
-    else {
-      const userGetByID = await this.getUserById(id);
-      const newUser = {
-        name: user.name,
-        username: userGetByID.username,
-        password: userGetByID.password,
-        email: user.email,
-        dayOfBirth: user.dayOfBirth,
-        role: userGetByID.role,
-        phone: user.phone,
-        address: user.address
-
-      }
-      this.userRepository.update(id, newUser);
-      return this.getUserById(id);
-    }
+      : {
+          ...user,
+          role: userGetByID.role,
+        };
+    this.userRepository.update(id, userUpdate);
+    return this.getUserById(id);
   }
 
   async deleteUser(id: ObjectID): Promise<void> {
@@ -108,21 +120,18 @@ export class UsersService {
     }
   }
 
-  async checkIdUser(id: ObjectID): Promise<boolean> {
-    const user = await this.getUserById(id);
-
-    return this.getUserById(id) ? true : false;
-  }
-
   async login(data): Promise<any> {
     const { username, password } = await data;
     console.log(username, password);
 
-    const user = await this.userRepository.findOne({ username });
+    const user = await this.userRepository.findOne({
+      where: { username },
+      relations: ['role'],
+    });
     if (!user) {
       throw new HttpException('User not existed', HttpStatus.CONFLICT);
     } else {
-      const match = await bcrypt.compareSync(password, user.password)
+      const match = await bcrypt.compareSync(password, user.password);
       if (match) {
         const token = jwt.sign(
           {
@@ -132,12 +141,18 @@ export class UsersService {
         );
         return {
           token: token,
-          role: user.role
-        }
-
+          role: user.role.name,
+        };
       } else {
         throw new HttpException('Login fail', HttpStatus.CONFLICT);
       }
     }
+  }
+
+  async checkRole(role?: string): Promise<Role | null> {
+    if (role) {
+      const arrRole: Role[] = await Role.find();
+      return arrRole.find(item => item.name === role);
+    } else return null;
   }
 }

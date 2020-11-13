@@ -8,10 +8,7 @@ export class UpdateProductDto {
     image: string;
 
     @IsNotEmpty()
-    price: string;
-
-    @IsNotEmpty()
-    warranty: String;
+    price: number;
 
     
     description: string;
@@ -19,21 +16,5 @@ export class UpdateProductDto {
     @IsNotEmpty()
     quantity: number;
 
-    @IsNotEmpty()
-    tag: string;
-
-    @IsNotEmpty()
-    createby: string;
-
-    @IsNotEmpty()
-    createdate: number;
-
-    @IsNotEmpty()
-    updateby: string;
-
-    @IsNotEmpty()
-    updatedate: number;
-
-    @IsNotEmpty()
-    status: string;
+    productscategory: String;
 }

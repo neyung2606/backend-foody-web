@@ -5,6 +5,7 @@ import {
   IsEmail,
   IsMobilePhone,
 } from 'class-validator';
+import { Role } from 'src/roles/role.entity';
 
 export class UpdateUserDto {
   name: string;
