@@ -9,6 +9,7 @@ import { ProductsModule } from './products/products.module';
 import { ProductsController } from './products/products.controller';
 import { PermissionsModule } from './permissions/permissions.module';
 import { RolesModule } from './roles/roles.module';
+import { UploadModule } from './upload/upload.module';
 
 
 @Module({
@@ -19,6 +20,7 @@ import { RolesModule } from './roles/roles.module';
     ProductsModule,
     PermissionsModule,
     RolesModule,
+    UploadModule,
   ],
   controllers: [AppController, ProductsController],
   providers: [AppService],

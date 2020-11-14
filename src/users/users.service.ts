@@ -59,9 +59,18 @@ export class UsersService {
 
   async createUser(createUserDto: CreateUserDto): Promise<User> {
     const users = await this.userRepository.find();
-    const found = users.filter(user => user.email === createUserDto.email);
-    if (found && createUserDto.email) {
+    const foundEmail = users.find(user => user.email === createUserDto.email);
+    const foundUsername = users.find(user => user.username === createUserDto.username);
+    console.log(foundUsername)
+    if (foundEmail && createUserDto.email) {
       throw new NotFoundException(`User with email is existed!!`);
+    }
+    if (foundUsername) {
+      throw new NotFoundException('Username is existed')
+    }
+    createUserDto = {
+      ...createUserDto,
+      role: 'USER'
     }
     return this.userRepository.createUser(createUserDto);
   }
