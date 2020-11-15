@@ -27,7 +27,6 @@ export class ProductsController {
     @Auth('PRODUCT_CREATE')
     @UsePipes(ValidationPipe)
     createProducts(@Body() CreateProductDto: CreateProductDto){
-        console.log(CreateProductDto);
         return this.productService.createProduct(CreateProductDto);
     }
 
@@ -37,7 +36,6 @@ export class ProductsController {
         @Param('id') id: ObjectID,
         @Body() product: UpdateProductDto
     ): Promise<Product>{
-        console.log(product)
         return this.productService.updateProduct(id,product);
     }
 

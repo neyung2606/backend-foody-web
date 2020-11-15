@@ -14,7 +14,7 @@ import * as bcrypt from 'bcrypt';
 @Entity('users')
 export class User extends BaseEntity {
   @PrimaryGeneratedColumn()
-  id: string;
+  id: number;
 
   @Column({ nullable: true })
   name: string;
@@ -27,7 +27,7 @@ export class User extends BaseEntity {
 
   @Column({ nullable: true })
   @IsEmail()
-  email: String;
+  email: string;
 
   @Column({ nullable: true })
   avatar: string;
@@ -43,8 +43,8 @@ export class User extends BaseEntity {
 
   roleId: number;
 
-  @BeforeInsert()
   @BeforeUpdate()
+  @BeforeInsert()
   hashPwd() {
     this.password = bcrypt.hashSync(this.password, 10);
   }

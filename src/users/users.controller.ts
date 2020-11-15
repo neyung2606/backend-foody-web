@@ -40,7 +40,6 @@ export class UsersController {
   @Post('users/create')
   @Auth('USER_CREATE')
   createUsersByAdmin(@Body() createUserDto: CreateUserDto) {
-    console.log(createUserDto)
     return this.usersService.createUser(createUserDto);
   }
 

@@ -5,7 +5,6 @@ import {
   IsEmail,
   IsMobilePhone,
 } from 'class-validator';
-import { Role } from 'src/roles/role.entity';
 
 export class UpdateUserDto {
   name: string;
@@ -15,7 +14,7 @@ export class UpdateUserDto {
   checkPassword: string;
 
   @IsEmail()
-  email: String;
+  email: string;
 
   dayOfBirth: Date;
   address: string;

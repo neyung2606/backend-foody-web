@@ -23,7 +23,6 @@ export class UsersService {
 
   async getUsers(req: any): Promise<User[]> {
     const { username, id } = await req;
-    console.log(username, id);
     if (username) {
       return this.userRepository.find({
         where: { username },
@@ -36,7 +35,9 @@ export class UsersService {
         relations: ['role'],
       });
     }
-    return await this.userRepository.find({ relations: ['role'] });
+    const users = await this.userRepository.find({ relations: ['role'] });
+    await users.sort((a, b) =>  a.id - b.id);
+    return users;
   }
 
   async getUserById(id: number): Promise<User> {
@@ -53,52 +54,55 @@ export class UsersService {
 
   async getUserByUsername(username: string): Promise<User> {
     const user = this.userRepository.find({ username });
-    console.log(user);
     return;
   }
 
   async createUser(createUserDto: CreateUserDto): Promise<User> {
     const users = await this.userRepository.find();
     const foundEmail = users.find(user => user.email === createUserDto.email);
-    const foundUsername = users.find(user => user.username === createUserDto.username);
-    console.log(foundUsername)
+    const foundUsername = users.find(
+      user => user.username === createUserDto.username,
+    );
     if (foundEmail && createUserDto.email) {
       throw new NotFoundException(`User with email is existed!!`);
     }
     if (foundUsername) {
-      throw new NotFoundException('Username is existed')
+      throw new NotFoundException('Username is existed');
     }
     createUserDto = {
       ...createUserDto,
-      role: 'USER'
-    }
+      role: 'USER',
+    };
     return this.userRepository.createUser(createUserDto);
   }
 
   async updateUserMobile(id: number, user: UpdateUserDto): Promise<User> {
     const userGetByID = await this.getUserById(id);
-    const checkRole = await this.checkRole(user.role);
-    const userUpdate = checkRole
-      ? {
-          ...user,
-          role: checkRole,
-        }
-      : {
-          ...user,
-          role: userGetByID.role,
-        };
     if (user.newPassword) {
       const match = await bcrypt.compareSync(
         user.checkPassword,
         userGetByID.password,
       );
       if (match) {
-        this.userRepository.update(id, userUpdate);
+        const pass = bcrypt.hashSync(user.newPassword, 10)
+        this.userRepository.update(id, {
+          password: pass
+        });
         return this.getUserById(id);
       } else {
         throw new NotFoundException('Kiểm tra lại pass cũ');
       }
     } else {
+      const checkRole = await this.checkRole(user.role);
+      const userUpdate = checkRole
+        ? {
+            ...user,
+            role: checkRole,
+          }
+        : {
+            ...user,
+            role: userGetByID.role,
+          };
       this.userRepository.update(id, userUpdate);
       return this.getUserById(id);
     }
@@ -106,6 +110,7 @@ export class UsersService {
 
   async updateUser(id: number, user: CreateUserDto): Promise<User> {
     const userGetByID = await this.getUserById(id);
+    user.password = user.password ? bcrypt.hashSync(user.password, 10) : userGetByID.password;
     const checkRole = await this.checkRole(user.role);
     const userUpdate = checkRole
       ? {
@@ -130,7 +135,6 @@ export class UsersService {
 
   async login(data): Promise<any> {
     const { username, password } = await data;
-    console.log(username, password);
 
     const user = await this.userRepository.findOne({
       where: { username },
