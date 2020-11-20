@@ -1,14 +1,25 @@
-import { Controller, Post, UploadedFile, UseInterceptors } from '@nestjs/common';
-import { FileInterceptor } from '@nestjs/platform-express';
+import {
+  Body,
+  Controller,
+  Post,
+  UploadedFiles,
+  UseInterceptors,
+} from '@nestjs/common';
+import { FilesInterceptor } from '@nestjs/platform-express';
 import { UploadService } from './upload.service';
 
 @Controller('upload')
 export class UploadController {
-    constructor(private readonly uploadService: UploadService) {}
+  constructor(private readonly uploadService: UploadService) {}
 
-    @Post()
-    @UseInterceptors(FileInterceptor('image'))
-    uploadImg(@UploadedFile() img: any) {
-        return this.uploadService.uploadImg(img);
-    }
+  @Post()
+  @UseInterceptors(FilesInterceptor('file'))
+  uploadImg(@UploadedFiles() img) {
+    return this.uploadService.uploadImg(img[0]);
+  }
+
+  @Post('/delete')
+  deleteImg(@Body() req) {
+    return this.uploadService.deleteImg(req);
+  }
 }

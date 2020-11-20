@@ -1,7 +1,5 @@
 import { Injectable } from '@nestjs/common';
 import * as Cloudinary from 'cloudinary';
-import * as fs from 'fs';
-import streamifier from 'streamifier';
 
 const cloudinary = Cloudinary.v2;
 cloudinary.config({
@@ -13,20 +11,20 @@ cloudinary.config({
 @Injectable()
 export class UploadService {
   async uploadImg(img): Promise<any> {
-    try {
-      return new Promise((resolve, reject) => {
-        cloudinary.uploader
-          .upload_stream({ folder: 'Image' }, (err, result) => {
-            if (result) {
-              resolve(result.url);
-            } else {
-              reject(err);
-            }
-          })
-          .end(img.buffer);
-      });
-    } catch (err) {
-      console.log(err);
-    }
+    return new Promise((resolve, reject) => {
+      cloudinary.uploader
+        .upload_stream({ folder: 'Image' }, (err, result) => {
+          if (result) {
+            resolve(result);
+          } else {
+            reject(err);
+          }
+        })
+        .end(img.buffer);
+    });
+  }
+
+  async deleteImg(req): Promise<any> {
+    await cloudinary.uploader.destroy(req.link);
   }
 }
