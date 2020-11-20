@@ -15,7 +15,7 @@ export class ProductRespository extends Repository<Product> {
 
         const product = new Product();
         product.name = name;
-        product.image = "";
+        product.image = image;
         product.price = price;
         product.description = description;
         product.quantity = quantity;

@@ -10,6 +10,7 @@ import {
 import { ApiProperty } from '@nestjs/swagger';
 import { IsOptional, IsNumber } from 'class-validator';
 import { Categories } from '../categories/categories.entity'
+import { Orders } from '../orders/orders.entity';
 @Entity('products')
 export class Product extends BaseEntity {
     @ApiProperty()
@@ -20,7 +21,7 @@ export class Product extends BaseEntity {
     name: string
 
     @Column()
-    image: string;
+    image: string[];
 
     @Column()
     price: number;
@@ -63,5 +64,11 @@ export class Product extends BaseEntity {
         )
     category: Categories[];
     // @ManyToMany(() => Categories)
+
+    @ManyToMany(
+        ()=> Orders,
+        order => order.product,
+    )
+    order : Orders[];
 
 }

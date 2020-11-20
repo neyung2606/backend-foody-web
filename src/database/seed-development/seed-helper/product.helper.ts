@@ -20,7 +20,7 @@ export class ProductHelper {
         return [
             Product.create({
                 name: 'Cơm bà tâm',
-                image: "",
+                image: ["https://thedisneyblog.com/wp-content/uploads/2017/03/avatar-land-food-1.jpg"],
                 price: 500000,
                 description: 'anh tam non',
                 quantity: 20,

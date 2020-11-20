@@ -7,9 +7,11 @@ import {
   ManyToOne,
   BeforeInsert,
   BeforeUpdate,
+  OneToMany,
 } from 'typeorm';
 import { IsEmail, IsOptional } from 'class-validator';
 import * as bcrypt from 'bcrypt';
+import { Orders } from 'src/orders/orders.entity';
 
 @Entity('users')
 export class User extends BaseEntity {
@@ -51,4 +53,9 @@ export class User extends BaseEntity {
 
   @ManyToOne(() => Role)
   role: Role;
+
+  @OneToMany(()=> Orders,
+  order => order.user,
+  )
+  order : Orders[];
 }
