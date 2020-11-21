@@ -16,7 +16,7 @@ export class CreateProductDto {
     @IsNotEmpty()
     quantity: number;
 
-    productscategory: String;
+    productscategory: string;
 
 
 }

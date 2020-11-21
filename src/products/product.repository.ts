@@ -8,7 +8,7 @@ export class ProductRespository extends Repository<Product> {
     async createProduct(CreateProductDto: CreateProductDto): Promise<Product> {
         const { name, image , price, description, quantity, productscategory  } = CreateProductDto;
         const arrcate: Categories[] = await Categories.find();
-        let arrAdd = []
+        const arrAdd = []
         arrcate.map(item => {
             if (item.name === productscategory) arrAdd.push(item)
         })
