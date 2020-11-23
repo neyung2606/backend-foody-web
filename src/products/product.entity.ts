@@ -3,13 +3,12 @@ import {
   PrimaryGeneratedColumn,
   Column,
   ManyToMany,
-  OneToMany,
   JoinTable,
   BaseEntity,
 } from 'typeorm';
 import { ApiProperty } from '@nestjs/swagger';
-import { IsOptional, IsNumber } from 'class-validator';
 import { Categories } from '../categories/categories.entity';
+import { Orders } from '../orders/orders.entity';
 @Entity('products')
 export class Product extends BaseEntity {
   @ApiProperty()
@@ -19,16 +18,16 @@ export class Product extends BaseEntity {
   @Column({ nullable: true })
   name: string;
 
-  @Column()
-  image: string;
+  @Column("text", { array: true, nullable: true })
+  image: string[];
 
   @Column()
   price: number;
 
-  @ApiProperty({ writeOnly: true, example: [1, 4] })
-  @IsOptional()
-  @IsNumber({}, { each: true })
-  categoryID: Array<number>;
+  // @ApiProperty({ writeOnly: true, example: [1, 4] })
+  // @IsOptional()
+  // @IsNumber({}, { each: true })
+  // categoryID: Array<number>;
 
   @Column()
   description: string;
@@ -57,4 +56,10 @@ export class Product extends BaseEntity {
   })
   category: Categories[];
   // @ManyToMany(() => Categories)
+
+  @ManyToMany(
+    () => Orders,
+    order => order.product,
+  )
+  order: Orders[];
 }

@@ -5,7 +5,7 @@ export class UpdateProductDto {
     name: string
 
     @IsNotEmpty()
-    image: string;
+    image: string[];
 
     @IsNotEmpty()
     price: number;
@@ -16,5 +16,5 @@ export class UpdateProductDto {
     @IsNotEmpty()
     quantity: number;
 
-    productscategory: String;
+    category: string;
 }

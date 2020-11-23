@@ -12,7 +12,7 @@ import { UpdateUserDto } from './dto/update-user.dto';
 import { ObjectID } from 'typeorm';
 import * as jwt from 'jsonwebtoken';
 import * as bcrypt from 'bcrypt';
-import { Role } from 'src/roles/role.entity';
+import { Role } from '../roles/role.entity';
 
 @Injectable()
 export class UsersService {

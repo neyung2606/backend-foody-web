@@ -13,6 +13,7 @@ export class ProductsController {
     constructor(private productService: ProductsService){}
 
     @Get("products")
+    @Auth("PRODUCT_READ")
     getProduct(): Promise<Product[]>
     {
         return this.productService.getProducts();
@@ -27,17 +28,18 @@ export class ProductsController {
     @Auth('PRODUCT_CREATE')
     @UsePipes(ValidationPipe)
     createProducts(@Body() CreateProductDto: CreateProductDto){
+        console.log(CreateProductDto)
         return this.productService.createProduct(CreateProductDto);
     }
 
-    @Patch('products/:id')
-    @Auth('PRODUCT_UPDATE')
-    updateProduct(
-        @Param('id') id: ObjectID,
-        @Body() product: UpdateProductDto
-    ): Promise<Product>{
-        return this.productService.updateProduct(id,product);
-    }
+    // @Patch('products/:id')
+    // @Auth('PRODUCT_UPDATE')
+    // updateProduct(
+    //     @Param('id') id: ObjectID,
+    //     @Body() product: UpdateProductDto
+    // ): Promise<Product>{
+    //     return this.productService.updateProduct(id,product);
+    // }
 
     @Delete('products/:id')
     @Auth('PRODUCT_DELETE')

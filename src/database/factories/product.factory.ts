@@ -6,13 +6,12 @@
  define(Product, (faker: typeof Faker, context: { productCategory : Categories[] }) => {
      const { productCategory } = context;
      const name = faker.name.findName();
-     const image = faker.image.food();
+     const image = [faker.image.food()];
      const price = faker.commerce.price();
      const description = faker.name.findName();
      const quantity = faker.random.number();
   
-  
-  
+     console.log(productCategory)
      const product = new Product();
      product.name = name;
      product.image = image;
