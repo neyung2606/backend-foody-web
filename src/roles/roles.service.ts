@@ -13,7 +13,7 @@ export class RolesService {
 
   async createRole(roleAdd: Role): Promise<Role> {
     const permissions = await Permission.find();
-    let perArr: Permission[] = [];
+    const perArr: Permission[] = [];
     roleAdd.permissionIds.map(role => permissions.map(permission => {
         if(permission.id === role) {
             perArr.push(permission)

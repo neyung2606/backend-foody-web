@@ -1,5 +1,5 @@
 export enum Ecate {
-    VEGATABLE = 'VEGATABLE',
+    VEGETABLE = 'VEGETABLE',
     SOUP = 'SOUP',
     FRIEDFOOD = 'FRIED FOOD',
     MEAT = 'MEAT'

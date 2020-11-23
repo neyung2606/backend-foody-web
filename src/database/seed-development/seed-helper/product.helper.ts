@@ -1,4 +1,3 @@
-import { from } from "rxjs";
 import {Ecate} from '../../../common/enums/productCateogory.enum';
 import {Categories} from '../../../categories/categories.entity';
 import {Product} from '../../../products/product.entity';
@@ -11,20 +10,14 @@ export class ProductHelper {
     }
 
     private getData(productcategory: Categories[]): any[]{
-        let arrCate = [];
-        productcategory.map(item => {
-            if(item.name === Ecate.MEAT) {
-                arrCate.push(item)
-            }
-        })
         return [
             Product.create({
                 name: 'Cơm bà tâm',
-                image: "",
+                image: ["https://thedisneyblog.com/wp-content/uploads/2017/03/avatar-land-food-1.jpg"],
                 price: 500000,
                 description: 'anh tam non',
                 quantity: 20,
-                category: arrCate
+                category: productcategory.filter(item => item.name === Ecate.MEAT)
             })
         ];
     }

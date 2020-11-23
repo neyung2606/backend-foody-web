@@ -4,8 +4,7 @@ export class CreateProductDto {
     @IsNotEmpty()
     name: string
 
-    @IsNotEmpty()
-    image: string;
+    image: string[];
 
     @IsNotEmpty()
     price: number;
@@ -16,7 +15,8 @@ export class CreateProductDto {
     @IsNotEmpty()
     quantity: number;
 
-    productscategory: String;
+    @IsNotEmpty()
+    category: string;
 
 
 }

@@ -32,12 +32,11 @@ export default class Seed implements Seeder {
     );
   }
 
-
   private randomUser(factory: Factory, role: Role) {
-    return factory(User)({role, password: '12345678'}).createMany(10);
+    return factory(User)({ role, password: '12345678' }).createMany(10);
   }
-  private randomProduct(factory: Factory, cate: Categories){
-    return factory(Product)({cate}).createMany(10);
+  private randomProduct(factory: Factory, cate: Categories[]) {
+    return factory(Product)({ cate }).createMany(10);
   }
 
   public async run(factory: Factory, connection: Connection) {
@@ -51,7 +50,9 @@ export default class Seed implements Seeder {
       const userHelper = new UserHelper(roleEntities);
       await userHelper.initUser();
 
-      const userRole: Role = roleEntities.find(role => role.name === ERole.USER); 
+      const userRole: Role = roleEntities.find(
+        role => role.name === ERole.USER,
+      );
       await this.randomUser(factory, userRole);
 
       await this.initCategory(enumToArray(Ecate));
@@ -60,8 +61,11 @@ export default class Seed implements Seeder {
       const productHelper = new ProductHelper(cateEntities);
       await productHelper.initProduct();
 
-      const cate: Categories = cateEntities.find(cate =>cate.name ===Ecate.FRIEDFOOD);
-      await this.randomProduct(factory,cate);
+      const cate: Categories[] = cateEntities.filter(
+        cate => cate.name === Ecate.MEAT,
+      );
+      // [categories { id: 4, name: MEAT}]
+      await this.randomProduct(factory, cate);
     } catch (err) {
       throw err;
     }
