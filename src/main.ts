@@ -17,7 +17,7 @@ async function bootstrap() {
   SwaggerModule.setup('api', app, document)
 
   app.enableCors({
-    origin: 'http://localhost:3000',
+    origin: 'https://5fbb80c298211500081c437e--stoic-carson-5afc45.netlify.app',
   });
   await app.listen(process.env.PORT || 3500);
 }

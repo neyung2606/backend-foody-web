@@ -10,6 +10,7 @@ import { ProductsController } from './products/products.controller';
 import { PermissionsModule } from './permissions/permissions.module';
 import { RolesModule } from './roles/roles.module';
 import { UploadModule } from './upload/upload.module';
+import { OrdersModule } from './orders/orders.module';
 
 
 @Module({
@@ -21,6 +22,7 @@ import { UploadModule } from './upload/upload.module';
     PermissionsModule,
     RolesModule,
     UploadModule,
+    OrdersModule,
   ],
   controllers: [AppController, ProductsController],
   providers: [AppService],
