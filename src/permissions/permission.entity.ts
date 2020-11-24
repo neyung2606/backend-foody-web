@@ -1,5 +1,5 @@
 import { Role } from '../roles/role.entity';
-import { Entity, ObjectIdColumn, ObjectID, Column, ManyToMany, BaseEntity, PrimaryGeneratedColumn } from 'typeorm'
+import { Entity, Column, ManyToMany, BaseEntity, PrimaryGeneratedColumn } from 'typeorm'
 
 @Entity('permissions')
 export class Permission extends BaseEntity {

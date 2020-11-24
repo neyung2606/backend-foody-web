@@ -9,7 +9,6 @@ import { User } from './user.entity';
 import { CreateUserDto } from './dto/create-user.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { UpdateUserDto } from './dto/update-user.dto';
-import { ObjectID } from 'typeorm';
 import * as jwt from 'jsonwebtoken';
 import * as bcrypt from 'bcrypt';
 import { Role } from '../roles/role.entity';
@@ -36,7 +35,7 @@ export class UsersService {
       });
     }
     const users = await this.userRepository.find({ relations: ['role'] });
-    await users.sort((a, b) =>  a.id - b.id);
+    await users.sort((a, b) => a.id - b.id);
     return users;
   }
 
@@ -50,11 +49,6 @@ export class UsersService {
     }
 
     return user;
-  }
-
-  async getUserByUsername(username: string): Promise<User> {
-    const user = this.userRepository.find({ username });
-    return;
   }
 
   async createUser(createUserDto: CreateUserDto): Promise<User> {
@@ -78,31 +72,30 @@ export class UsersService {
 
   async updateUserMobile(id: number, user: UpdateUserDto): Promise<User> {
     const userGetByID = await this.getUserById(id);
+
+    // update password user at mobile
     if (user.newPassword) {
       const match = await bcrypt.compareSync(
         user.checkPassword,
         userGetByID.password,
       );
       if (match) {
-        const pass = bcrypt.hashSync(user.newPassword, 10)
+        const pass = bcrypt.hashSync(user.newPassword, 10);
         this.userRepository.update(id, {
-          password: pass
+          password: pass,
         });
         return this.getUserById(id);
       } else {
         throw new NotFoundException('Kiểm tra lại pass cũ');
       }
-    } else {
-      const checkRole = await this.checkRole(user.role);
-      const userUpdate = checkRole
-        ? {
-            ...user,
-            role: checkRole,
-          }
-        : {
-            ...user,
-            role: userGetByID.role,
-          };
+    }
+
+    // update profile user at mobile
+    else {
+      const userUpdate = {
+        ...user,
+        role: userGetByID.role,
+      };
       this.userRepository.update(id, userUpdate);
       return this.getUserById(id);
     }
@@ -110,7 +103,9 @@ export class UsersService {
 
   async updateUser(id: number, user: CreateUserDto): Promise<User> {
     const userGetByID = await this.getUserById(id);
-    user.password = user.password ? bcrypt.hashSync(user.password, 10) : userGetByID.password;
+    user.password = user.password
+      ? bcrypt.hashSync(user.password, 10)
+      : userGetByID.password;
     const checkRole = await this.checkRole(user.role);
     const userUpdate = checkRole
       ? {
@@ -125,7 +120,7 @@ export class UsersService {
     return this.getUserById(id);
   }
 
-  async deleteUser(id: ObjectID): Promise<void> {
+  async deleteUser(id: number): Promise<void> {
     const result = await this.userRepository.delete(id);
 
     if (result.affected === 0) {
@@ -163,8 +158,7 @@ export class UsersService {
 
   async checkRole(role?: string): Promise<Role | null> {
     if (role) {
-      const arrRole: Role[] = await Role.find();
-      return arrRole.find(item => item.name === role);
+      return Role.findOne({ where: { name: role }})
     } else return null;
   }
 }

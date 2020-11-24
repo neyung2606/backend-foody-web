@@ -35,22 +35,22 @@ export class Product extends BaseEntity {
   @Column()
   quantity: number;
 
-  postID: string;
+  postID: number;
 
   //relation
   //  @ApiProperty()
   @ManyToMany(
     () => Categories,
-    productscategory => productscategory.product,
+    categories => categories.product, { nullable: false ,onDelete: 'CASCADE'}
   )
   @JoinTable({
     name: 'categories_products',
     joinColumn: {
-      name: 'productID',
+      name: 'productId',
       referencedColumnName: 'id',
     },
     inverseJoinColumn: {
-      name: 'categoryID',
+      name: 'categoryId',
       referencedColumnName: 'id',
     },
   })

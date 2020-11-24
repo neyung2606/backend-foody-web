@@ -1,4 +1,4 @@
-import { Repository, EntityRepository, ObjectID } from 'typeorm';
+import { Repository, EntityRepository, In } from 'typeorm';
 import { Product } from './product.entity';
 import { CreateProductDto } from './dto/create-product.dto';
 import { Categories } from 'src/categories/categories.entity';
@@ -14,8 +14,6 @@ export class ProductRespository extends Repository<Product> {
       quantity,
       category,
     } = CreateProductDto;
-    const arrcate: Categories[] = await Categories.find();
-    const arrAdd = arrcate.filter(item => item.name === category);
 
     const product = new Product();
     product.name = name;
@@ -23,7 +21,9 @@ export class ProductRespository extends Repository<Product> {
     product.price = price;
     product.description = description;
     product.quantity = quantity;
-    product.category = arrAdd;
+    product.category = await Categories.find({
+      where: { name: In([category]) },
+    });
     await product.save();
 
     return product;

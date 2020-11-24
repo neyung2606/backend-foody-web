@@ -13,7 +13,6 @@ import { UsersService } from './users.service';
 import { User } from './user.entity';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
-import { ObjectID } from 'typeorm';
 import { Auth } from 'src/auth/auth.decorator';
 
 @Controller()
@@ -74,7 +73,7 @@ export class UsersController {
 
   @Delete('users/:id')
   @Auth('USER_DELETE')
-  deleteUser(@Param('id') id: ObjectID): Promise<void> {
+  deleteUser(@Param('id') id: number): Promise<void> {
     return this.usersService.deleteUser(id);
   }
 }
