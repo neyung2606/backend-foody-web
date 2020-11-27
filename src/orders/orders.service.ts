@@ -17,5 +17,8 @@ constructor(
     @InjectRepository(OrdersRespository)
    private orderRespository : OrdersRespository,
 ){}
-
+    async getOrder() : Promise<Orders[]>{
+        return this.orderRespository.find();
+    }
+    
 }

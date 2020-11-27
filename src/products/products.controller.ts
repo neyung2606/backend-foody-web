@@ -20,7 +20,7 @@ export class ProductsController {
   constructor(private productService: ProductsService) {}
 
   @Get('products')
-  @Auth('PRODUCT_READ')
+ // @Auth('PRODUCT_READ')
   getProduct(): Promise<Product[]> {
     return this.productService.getProducts();
   }
