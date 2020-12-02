@@ -28,17 +28,16 @@ export class Orders extends BaseEntity{
     @Column()
     payment: string;
 
+    @Column()
+    createBy: number;
+
     userID: number;
 
-    productID: Array<number>;
+    //orderDetail: 
 
 
     //relation
-    @ManyToMany(
-        () => Product,
-        product => product.order,
-    )
-    product: Product[];
+    
 
     @ManyToOne (
         () => User,
