@@ -6,12 +6,20 @@ export class CreateOrderDto {
     totalMoney: number;
 
     @IsNotEmpty()
-    orderStatus: string; 
-    
+    id_user: number;
+
     @IsNotEmpty()
-    payment: string;
+    productOrder: {
+        id_product: number,
+        quantity: number
+    }[];
 
-    user : string;
+    @IsNotEmpty()
+    name: string;
 
-    product: string;
+    @IsNotEmpty()
+    address: string;
+
+    @IsNotEmpty()
+    phone: string;
 }

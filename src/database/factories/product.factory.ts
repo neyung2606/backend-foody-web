@@ -11,7 +11,7 @@
      const description = faker.name.findName();
      const quantity = faker.random.number();
   
-     console.log(productCategory)
+    //  console.log(productCategory)
      const product = new Product();
      product.name = name;
      product.image = image;

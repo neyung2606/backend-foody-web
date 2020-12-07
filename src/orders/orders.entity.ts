@@ -2,16 +2,15 @@ import {
     Entity,
     PrimaryGeneratedColumn,
     Column,
-    ManyToMany,
-    OneToMany,
-    JoinTable,
     BaseEntity,
     ManyToOne,
 } from 'typeorm';
 import {ApiProperty} from '@nestjs/swagger';
 import { } from 'class-validator';
-import {Product} from '../products/product.entity';
 import {User} from '../users/user.entity';
+import { ProductOrder } from './interfaces/productOrder.interface';
+
+
 
 @Entity('orders')
 export class Orders extends BaseEntity{
@@ -23,22 +22,21 @@ export class Orders extends BaseEntity{
     totalMoney: number;
 
     @Column()
-    orderStatus: string;
+    name_receive: string;
 
     @Column()
-    payment: string;
+    address_receive: string;
+
+    @Column()
+    phone_receive: string;
 
     userID: number;
 
-    productID: Array<number>;
+    @Column({type: 'text' ,array: true, nullable: true})
+    orderDetail: ProductOrder[];
 
-
-    //relation
-    @ManyToMany(
-        () => Product,
-        product => product.order,
-    )
-    product: Product[];
+    @Column()
+    create_at: Date;
 
     @ManyToOne (
         () => User,
