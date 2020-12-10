@@ -57,9 +57,5 @@ export class Product extends BaseEntity {
   category: Categories[];
   // @ManyToMany(() => Categories)
 
-  @ManyToMany(
-    () => Orders,
-    order => order.product,
-  )
-  order: Orders[];
+ 
 }
