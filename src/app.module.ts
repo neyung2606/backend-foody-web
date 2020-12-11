@@ -11,6 +11,7 @@ import { PermissionsModule } from './permissions/permissions.module';
 import { RolesModule } from './roles/roles.module';
 import { UploadModule } from './upload/upload.module';
 import { OrdersModule } from './orders/orders.module';
+import { ReviewsModule } from './reviews/reviews.module';
 
 
 @Module({
@@ -23,6 +24,7 @@ import { OrdersModule } from './orders/orders.module';
     RolesModule,
     UploadModule,
     OrdersModule,
+    ReviewsModule,
   ],
   controllers: [AppController, ProductsController],
   providers: [AppService],
