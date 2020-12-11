@@ -12,7 +12,7 @@ import {
 import { IsEmail, IsOptional } from 'class-validator';
 import * as bcrypt from 'bcrypt';
 import { Orders } from '../orders/orders.entity';
-
+import {Reviews} from '../reviews/review.entity';
 @Entity('users')
 export class User extends BaseEntity {
   @PrimaryGeneratedColumn()
@@ -45,6 +45,8 @@ export class User extends BaseEntity {
 
   roleId: number;
 
+  reviewId: number;
+
   @BeforeUpdate()
   @BeforeInsert()
   hashPwd() {
@@ -58,4 +60,9 @@ export class User extends BaseEntity {
   order => order.user,
   )
   order : Orders[];
+
+  @OneToMany(() => Reviews,
+  review => review.user,
+   )
+   review : Reviews[];
 }
