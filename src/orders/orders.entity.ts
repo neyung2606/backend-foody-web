@@ -36,7 +36,10 @@ export class Orders extends BaseEntity{
     orderDetail: ProductOrder[];
 
     @Column()
-    create_at: Date;
+    created_at: Date;
+
+    @Column({nullable: true})
+    deleted_at: Date;
 
     @ManyToOne (
         () => User,

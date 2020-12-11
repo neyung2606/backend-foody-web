@@ -25,16 +25,16 @@ export class UsersService {
     if (username) {
       return this.userRepository.find({
         where: { username },
-        relations: ['role'],
+        relations: ['role', 'order'],
       });
     }
     if (id) {
       return this.userRepository.find({
         where: { id },
-        relations: ['role'],
+        relations: ['role', 'order'],
       });
     }
-    const users = await this.userRepository.find({ relations: ['role'] });
+    const users = await this.userRepository.find({ relations: ['role', 'order'] });
     await users.sort((a, b) => a.id - b.id);
     return users;
   }

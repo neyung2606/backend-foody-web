@@ -7,5 +7,6 @@ export const typeOrmConfig: TypeOrmModuleOptions = {
     entities: [__dirname + '/../**/*.entity.{js,ts}'],
     ssl: {
         rejectUnauthorized: false
-    }
+    },
+    synchronize: true,
 }

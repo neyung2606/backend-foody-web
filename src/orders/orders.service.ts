@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { OrdersRespository } from './orders.respository';
 import { Orders } from './orders.entity';
 import { CreateOrderDto } from './dto/create-order.dto';
@@ -15,7 +15,7 @@ export class OrdersService {
   ) {}
 
   async getOrder(): Promise<Orders[]> {
-    return this.orderRespository.find({ relations: ['user'] });
+    return this.orderRespository.find({ where: { deleted_at: null } ,relations: ['user'] });
   }
 
   async createOrder(
@@ -38,13 +38,23 @@ export class OrdersService {
       order.totalMoney = totalMoney;
       order.user = await User.findOne({ where: { id: id_user } });
       order.orderDetail = await this.getProduct(productOrder);
-      order.create_at = new Date();
+      order.created_at = new Date();
       order.save();
   
       return order;
     } catch {
       console.log('loi')
     }
+  }
+
+  
+
+  async deleteOrder(id: number): Promise<void> {
+    const order = await this.orderRespository.findOne({ where: {id: id}});
+    if (!order) {
+      throw new NotFoundException(`Order with "${id}" not found`);
+    }
+    await this.orderRespository.update(id, { deleted_at: new Date()})
   }
 
   async getProduct(order_product: any[]): Promise<ProductOrder[]> {

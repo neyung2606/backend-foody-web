@@ -45,6 +45,8 @@ export class User extends BaseEntity {
 
   roleId: number;
 
+  orderId: Array<number>;
+
   @BeforeUpdate()
   @BeforeInsert()
   hashPwd() {
