@@ -10,6 +10,9 @@ export class UpdateOrderDto {
     @IsNotEmpty()
     payment: string;
 
+    @IsNotEmpty()
+    createBy: number;
+    
     user : string;
 
     product: string;
