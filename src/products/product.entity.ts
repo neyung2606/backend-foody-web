@@ -5,10 +5,12 @@ import {
   ManyToMany,
   JoinTable,
   BaseEntity,
+  OneToMany,
 } from 'typeorm';
 import { ApiProperty } from '@nestjs/swagger';
 import { Categories } from '../categories/categories.entity';
 import { Orders } from '../orders/orders.entity';
+import { Reviews } from 'src/reviews/review.entity';
 @Entity('products')
 export class Product extends BaseEntity {
   @ApiProperty()
@@ -35,7 +37,7 @@ export class Product extends BaseEntity {
   @Column()
   quantity: number;
 
-  postID: number;
+  reviewID: number;
 
   //relation
   //  @ApiProperty()
@@ -56,6 +58,12 @@ export class Product extends BaseEntity {
   })
   category: Categories[];
   // @ManyToMany(() => Categories)
+
+  @OneToMany(()=> Reviews,
+   review => review.product,
+  )
+
+  review : Reviews[];
 
  
 }

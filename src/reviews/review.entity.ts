@@ -34,6 +34,7 @@ export class Reviews extends BaseEntity{
         product =>product.review ,
     )
     product : Product;
-
-
+    
+    @Column({nullable: true})
+    deleted_at : Date;
 }

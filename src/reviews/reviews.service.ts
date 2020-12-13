@@ -16,7 +16,7 @@ export class ReviewsService {
     ) { }
 
     async getReview(): Promise<Reviews[]> {
-        return this.reviewRepository.find({ relations: ['user'] })
+        return this.reviewRepository.find({where :{deleted_at : null}, relations: ['user'] })
     }
 
     async createReview(
@@ -50,5 +50,6 @@ export class ReviewsService {
         if (!review){
             throw new NotFoundException(`Review not found`);
         }
+    await this.reviewRepository.update(id, {deleted_at : new Date()})
     }
 }
