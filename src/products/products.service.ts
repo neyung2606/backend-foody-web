@@ -17,7 +17,20 @@ export class ProductsService {
     private productRepository: ProductRespository,
   ) {}
 
-  async getProducts(): Promise<Product[]> {
+  async getProducts(req : any): Promise<Product[]> {
+    const {category,id} = await req;
+    if (category){
+      return this.productRepository.find({
+        where : this.findCategory(category),
+        relations: ['category'],
+      });
+    } 
+    if (id){
+      return this.productRepository.find({
+        where : {id},
+        relations: ['category'],
+      });
+    } 
     const products = await this.productRepository.find({ relations: ['category'] });
     await products.sort((a, b) => a.id - b.id)
     return products;

@@ -69,4 +69,11 @@ export class OrdersService {
       
     })).catch(error => { throw error});
   }
+
+  async getMoney(year : Date): Promise<Orders[]>{
+    
+    const allOrder = this.orderRespository.find({where:{created_at : year },relations: ['user'] });
+    
+    return
+  }
 }

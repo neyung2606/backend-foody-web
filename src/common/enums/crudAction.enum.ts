@@ -21,4 +21,5 @@ export enum ECrudFeature {
   CITY = 'CITY',
   DISTRICT = 'DISTRICT',
   PAYMENT = 'PAYMENT',
+  ORDER ='ORDER',
 }

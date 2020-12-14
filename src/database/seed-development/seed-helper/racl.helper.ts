@@ -28,7 +28,7 @@ export class RaclHelper {
         role: ERole.MOD,
         permissions: flatMap([
           ...this.createManyPermissionFromFeature(ECrudFeature.PRODUCT),
-          ...this.createManyPermissionFromFeature(ECrudFeature.BILL)
+          ...this.createManyPermissionFromFeature(ECrudFeature.ORDER,['CREATE', 'UPDATE']),
         ]),
       },
       //   {

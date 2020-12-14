@@ -8,6 +8,7 @@ import {
   Param,
   Delete,
   Put,
+  Query,
 } from '@nestjs/common';
 import { ProductsService } from './products.service';
 import { Product } from './product.entity';
@@ -20,14 +21,14 @@ export class ProductsController {
   constructor(private productService: ProductsService) {}
 
   @Get('products')
-  getProduct(): Promise<Product[]> {
-    return this.productService.getProducts();
+  getProduct(@Query() req): Promise<Product[]> {
+    return this.productService.getProducts(req);
   }
 
-  @Get('products/:id')
-  getProductbyId(@Param('id') id: number): Promise<Product> {
-    return this.productService.getProductByID(id);
-  }
+  //@Get('products/:id')
+  //getProductbyId(@Param('id') id: number): Promise<Product> {
+   // return this.productService.getProductByID(id);
+ // }
 
   @Post('products/create')
   @Auth('PRODUCT_CREATE')
