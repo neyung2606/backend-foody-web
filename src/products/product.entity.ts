@@ -9,8 +9,7 @@ import {
 } from 'typeorm';
 import { ApiProperty } from '@nestjs/swagger';
 import { Categories } from '../categories/categories.entity';
-import { Orders } from '../orders/orders.entity';
-import { Reviews } from 'src/reviews/review.entity';
+import { Reviews } from '../reviews/review.entity';
 @Entity('products')
 export class Product extends BaseEntity {
   @ApiProperty()

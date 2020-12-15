@@ -61,11 +61,14 @@ export default class Seed implements Seeder {
       const productHelper = new ProductHelper(cateEntities);
       await productHelper.initProduct();
 
-      const cate: Categories[] = cateEntities.filter(
+      const category: Categories[] = cateEntities.filter(
         cate => cate.name === Ecate.MEAT,
       );
+      console.log("=========== Category ============")
+      console.log(category);
+      
       // [categories { id: 4, name: MEAT}]
-      await this.randomProduct(factory, cate);
+      await factory(Product)({ productCategory: category }).createMany(10);
     } catch (err) {
       throw err;
     }
