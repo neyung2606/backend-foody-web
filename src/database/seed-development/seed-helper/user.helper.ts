@@ -36,7 +36,7 @@ export class UserHelper {
         role: role.find(item => item.name === ERole.MOD),
       }),
       User.create({
-        name: 'SHIPPER',
+        name: 'MOD',
         username: 'galtv3',
         password: '12345678',
         email: 'shipper@gmail.com',

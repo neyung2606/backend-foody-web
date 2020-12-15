@@ -12,10 +12,10 @@ export class ProductHelper {
     private getData(productcategory: Categories[]): any[]{
         return [
             Product.create({
-                name: 'Cơm bà tâm',
+                name: 'Cơm bà Nhi',
                 image: ["https://thedisneyblog.com/wp-content/uploads/2017/03/avatar-land-food-1.jpg"],
                 price: 500000,
-                description: 'anh tam non',
+                description: 'Ngon bổ rẻ',
                 quantity: 20,
                 category: productcategory.filter(item => item.name === Ecate.MEAT)
             })

@@ -9,6 +9,7 @@ import { UpdateProductDto } from './dto/update-product.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Categories } from 'src/categories/categories.entity';
 import { In } from 'typeorm';
+import {CategoriesService} from 'src/categories/categories.service';
 
 @Injectable()
 export class ProductsService {
@@ -19,12 +20,7 @@ export class ProductsService {
 
   async getProducts(req : any): Promise<Product[]> {
     const {category,id} = await req;
-    if (category){
-      return this.productRepository.find({
-        where : this.findCategory(category),
-        relations: ['category'],
-      });
-    } 
+  
     if (id){
       return this.productRepository.find({
         where : {id},

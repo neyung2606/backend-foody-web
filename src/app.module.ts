@@ -12,6 +12,7 @@ import { RolesModule } from './roles/roles.module';
 import { UploadModule } from './upload/upload.module';
 import { OrdersModule } from './orders/orders.module';
 import { ReviewsModule } from './reviews/reviews.module';
+import { CategoriesModule } from './categories/categories.module';
 
 
 @Module({
@@ -25,6 +26,7 @@ import { ReviewsModule } from './reviews/reviews.module';
     UploadModule,
     OrdersModule,
     ReviewsModule,
+    CategoriesModule,
   ],
   controllers: [AppController, ProductsController],
   providers: [AppService],
