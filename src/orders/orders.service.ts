@@ -14,13 +14,22 @@ export class OrdersService {
     private orderRespository: OrdersRespository,
   ) {}
 
-  async getOrder(): Promise<Orders[]> {
-    return this.orderRespository.find({ where: { deleted_at: null } ,relations: ['user'] });
+  async getOrder(req: any): Promise<Orders[]> {
+    const { id } = req;
+
+    if (id) {
+      return this.orderRespository.find({
+        where: { id: id, deleted_at: null },
+        relations: ['user'],
+      });
+    }
+    return this.orderRespository.find({
+      where: { deleted_at: null },
+      relations: ['user'],
+    });
   }
 
-  async createOrder(
-    createOrderDto: CreateOrderDto
-  ): Promise<Orders> {
+  async createOrder(createOrderDto: CreateOrderDto): Promise<Orders> {
     const {
       name,
       address,
@@ -28,9 +37,8 @@ export class OrdersService {
       totalMoney,
       productOrder,
       id_user,
-    } = await createOrderDto;
+    } = createOrderDto;
     try {
-
       const order = new Orders();
       order.name_receive = name;
       order.address_receive = address;
@@ -40,25 +48,24 @@ export class OrdersService {
       order.orderDetail = await this.getProduct(productOrder);
       order.created_at = new Date();
       order.save();
-  
+
       return order;
-    } catch {
-      console.log('loi')
+    } catch (error) {
+      console.log(error);
     }
   }
 
-  
-
   async deleteOrder(id: number): Promise<void> {
-    const order = await this.orderRespository.findOne({ where: {id: id}});
+    const order = await this.orderRespository.findOne({ where: { id: id } });
     if (!order) {
       throw new NotFoundException(`Order with "${id}" not found`);
     }
-    await this.orderRespository.update(id, { deleted_at: new Date()})
+    await this.orderRespository.update(id, { deleted_at: new Date() });
   }
 
   async getProduct(order_product: any[]): Promise<ProductOrder[]> {
-    return Promise.all(order_product.map(async item => {
+    return Promise.all(
+      order_product.map(async item => {
         const product: Product = await Product.findOne({
           where: { id: item.id_product },
         });
@@ -66,14 +73,16 @@ export class OrdersService {
           quantity: item.quantity,
           product: product,
         };
-      
-    })).catch(error => { throw error});
+      }),
+    );
   }
 
-  async getMoney(year : Date): Promise<Orders[]>{
-    
-    const allOrder = this.orderRespository.find({where:{created_at : year },relations: ['user'] });
-    
-    return
+  async getMoney(year: Date): Promise<Orders[]> {
+    const allOrder = this.orderRespository.find({
+      where: { created_at: year },
+      relations: ['user'],
+    });
+
+    return;
   }
 }

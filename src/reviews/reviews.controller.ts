@@ -4,6 +4,7 @@ import { Controller,
     Body,
     Param,
     Delete,
+    Query,
 } from '@nestjs/common';
 import { Auth } from 'src/auth/auth.decorator';
 import {CreateReviewDto} from './dto/create-review.dto';
@@ -13,10 +14,10 @@ import {ReviewsService} from './reviews.service';
 export class ReviewsController {
     constructor(readonly reviewService : ReviewsService){}
 
-    @Get('')
+    @Get()
     @Auth('')
-    getAllReview():Promise<Reviews[]>{
-        return this.reviewService.getReview();
+    getAllReview(@Query() req: any):Promise<Reviews[]>{
+        return this.reviewService.getReview(req);
     }
 
     @Post('/create')

@@ -67,8 +67,6 @@ export default class Seed implements Seeder {
       const categorymeat: Categories[] = cateEntities.filter(
         cate => cate.name === Ecate.MEAT,
       );
-      console.log("=========== Category ============")
-      console.log(categoryFriedfood);
       
       // [categories { id: 4, name: MEAT}]
       await factory(Product)({ productCategory: categoryFriedfood }).createMany(10);

@@ -24,10 +24,10 @@ export class ProductsService {
     if (id){
       return this.productRepository.find({
         where : {id},
-        relations: ['category'],
+        relations: ['category', 'review'],
       });
     } 
-    const products = await this.productRepository.find({ relations: ['category'] });
+    const products = await this.productRepository.find({ relations: ['category', 'review'] });
     await products.sort((a, b) => a.id - b.id)
     return products;
   }

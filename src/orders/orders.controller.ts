@@ -5,7 +5,7 @@ import {
   Body,
   Param,
   Delete,
-  Put,
+  Query,
 } from '@nestjs/common';
 import { Auth } from 'src/auth/auth.decorator';
 import { CreateOrderDto } from './dto/create-order.dto';
@@ -18,8 +18,8 @@ export class OrdersController {
 
   @Get()
   @Auth('')
-  getAllOrder(): Promise<Orders[]> {
-    return this.ordersService.getOrder();
+  getAllOrder(@Query() req: any): Promise<Orders[]> {
+    return this.ordersService.getOrder(req);
   }
 
   @Post('/create')

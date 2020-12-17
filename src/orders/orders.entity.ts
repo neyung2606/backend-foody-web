@@ -32,7 +32,7 @@ export class Orders extends BaseEntity{
 
     userID: number;
 
-    @Column({type: 'text' ,array: true, nullable: true})
+    @Column({type: 'simple-json',  nullable: true})
     orderDetail: ProductOrder[];
 
     @Column()
